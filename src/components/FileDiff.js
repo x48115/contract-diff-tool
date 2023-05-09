@@ -80,7 +80,7 @@ const Wrapper = styled.div`
 `;
 
 const HideIfCollapsed = styled.div`
-  display: ${(props) => (props.collapsed ? "none" : "")};
+  display: ${(props) => (props.collapsed === "true" ? "none" : "")};
 `;
 
 const customStyles = {
@@ -98,7 +98,7 @@ const Right = styled.div`
 
 const ExpandMoreWrap = styled.div`
   display: inline-block;
-  transform: ${(props) => (props.collapsed ? "rotate(180deg)" : "")};
+  transform: ${(props) => (props.collapsed === "true" ? "rotate(180deg)" : "")};
 `;
 const codeFoldMessageRenderer = (str) => {
   return (
@@ -122,11 +122,11 @@ const highlightSyntax = (str) => (
 );
 
 export default ({ oldCode, newCode, splitView, fileName }) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState("false");
   const [expandAll, setExpandAll] = useState(false);
 
   const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
+    setCollapsed(collapsed === "true" ? "false" : "true");
   };
 
   return (
@@ -134,7 +134,7 @@ export default ({ oldCode, newCode, splitView, fileName }) => {
       <SourceHeader>
         <div>
           <Tooltip
-            title={collapsed ? "Show file" : "Hide file"}
+            title={collapsed === "true" ? "Show file" : "Hide file"}
             placement="top"
           >
             <IconButton
@@ -150,7 +150,7 @@ export default ({ oldCode, newCode, splitView, fileName }) => {
                 sx={{
                   fontSize: 30,
                   opacity: 0.5,
-                  transform: `${collapsed ? "rotate(180deg)" : ""}`,
+                  transform: `${collapsed === "true" ? "rotate(180deg)" : ""}`,
                 }}
               />
             </IconButton>
@@ -194,84 +194,83 @@ export default ({ oldCode, newCode, splitView, fileName }) => {
             <div>
               {shortenAddress("0xde1e704dae0b4051e80dabb26ab6ad6c12262da0", 10)}
             </div>
-            <Tooltip title="File Menu" placement="top">
-              <Tooltip
-                arrow
-                PopperProps={{
-                  sx: {
-                    "& .MuiTooltip-tooltip": {
-                      bgcolor: "background.paper",
-                    },
-                    "& .MuiTooltip-arrow": {
-                      bgcolor: "transparent",
-                      color: "black",
-                    },
-                    "& .MuiTooltip-tooltip li": {
-                      padding: 0,
-                    },
+
+            <Tooltip
+              arrow
+              PopperProps={{
+                sx: {
+                  "& .MuiTooltip-tooltip": {
+                    bgcolor: "background.paper",
                   },
-                }}
-                title={
-                  <Box>
-                    <List component="nav" aria-label="secondary mailbox folder">
-                      <ListItem>
-                        <ListItemButton>
-                          <ListItemIcon>
-                            <ContentCopy />
-                          </ListItemIcon>
-                          <ListItemText primary="Copy file" />
-                        </ListItemButton>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemButton>
-                          <ListItemIcon>
-                            <CopyAll />
-                          </ListItemIcon>
-                          <ListItemText primary="Copy flattened files" />
-                        </ListItemButton>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemButton>
-                          <ListItemIcon>
-                            <OpenInNew />
-                          </ListItemIcon>
-                          <ListItemText primary="View in explorer" />
-                        </ListItemButton>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemButton>
-                          <ListItemIcon>
-                            <Code />
-                          </ListItemIcon>
-                          <ListItemText primary="Open in remix" />
-                        </ListItemButton>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemButton>
-                          <ListItemIcon>
-                            <Download />
-                          </ListItemIcon>
-                          <ListItemText primary="Download all files" />
-                        </ListItemButton>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemButton>
-                          <ListItemIcon>
-                            <Download />
-                          </ListItemIcon>
-                          <ListItemText primary="Download flattened files" />
-                        </ListItemButton>
-                      </ListItem>
-                    </List>
-                  </Box>
-                }
-              >
-                <FileMore>
-                  <IconButton size="small" edge="end">
-                    <MoreHoriz sx={{ fontSize: 24 }} />
-                  </IconButton>
-                </FileMore>
-              </Tooltip>
+                  "& .MuiTooltip-arrow": {
+                    bgcolor: "transparent",
+                    color: "black",
+                  },
+                  "& .MuiTooltip-tooltip li": {
+                    padding: 0,
+                  },
+                },
+              }}
+              title={
+                <Box>
+                  <List component="nav" aria-label="secondary mailbox folder">
+                    <ListItem>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <ContentCopy />
+                        </ListItemIcon>
+                        <ListItemText primary="Copy file" />
+                      </ListItemButton>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <CopyAll />
+                        </ListItemIcon>
+                        <ListItemText primary="Copy flattened files" />
+                      </ListItemButton>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <OpenInNew />
+                        </ListItemIcon>
+                        <ListItemText primary="View in explorer" />
+                      </ListItemButton>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <Code />
+                        </ListItemIcon>
+                        <ListItemText primary="Open in remix" />
+                      </ListItemButton>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <Download />
+                        </ListItemIcon>
+                        <ListItemText primary="Download all files" />
+                      </ListItemButton>
+                    </ListItem>
+                    <ListItem>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <Download />
+                        </ListItemIcon>
+                        <ListItemText primary="Download flattened files" />
+                      </ListItemButton>
+                    </ListItem>
+                  </List>
+                </Box>
+              }
+            >
+              <FileMore>
+                <IconButton size="small" edge="end">
+                  <MoreHoriz sx={{ fontSize: 24 }} />
+                </IconButton>
+              </FileMore>
             </Tooltip>
           </FileInfo>
         </FileInfos>

@@ -92,6 +92,10 @@ const Layout = styled.div`
   margin: 0px 30px;
 `;
 
+const Results = styled.div`
+  display: ${(props) => (props.hide === "true" ? "none" : "")};
+`;
+
 let oldCode = `
 // SPDX-License-Identifier: GPLv3
 pragma solidity 0.8.4;
@@ -192,6 +196,20 @@ contract DEIStablecoin is
 }
 `;
 
+const HaventStarted = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  top: 200px;
+  position: relative;
+  display: ${(props) => (props.hide === "true" ? "none" : "")};
+`;
+
+const HaventStartedText = styled.div`
+  font-size: 40px;
+  animation: slow-blink normal 2s infinite ease-in-out;
+`;
+
 function App() {
   const hidefiles = useHideFiles();
   const splitView = useSplitView();
@@ -200,6 +218,7 @@ function App() {
   const [addedText, setAddedText] = useState("");
   const [removedText, setRemovedText] = useState("");
   const [changedText, setChangedText] = useState("2 changed files");
+  const [contracts, setContracts] = useState({});
 
   useEffect(() => {
     const added = document.querySelectorAll(
@@ -252,6 +271,9 @@ function App() {
     // eslint-disable-next-line
     plugins: prettierPlugins,
   });
+
+  const hasResults = Object.keys(contracts).length > 0;
+
   return (
     <Wrapper>
       <SearchField>
@@ -264,50 +286,58 @@ function App() {
           <ChainSelector />
         </Contract>
       </SearchField>
-      <Summary>
-        <CollapseAndText>
-          {Collapse}
-          <LineChanges>
-            <div>
-              Showing {changedText} with {addedText} and {removedText}.
-            </div>
-          </LineChanges>
-        </CollapseAndText>
-        <ToggleButtonGroup
-          size="small"
-          value={splitView ? "split" : "unified"}
-          exclusive
-          aria-label="Platform"
-          onChange={onViewChange}
-        >
-          <ToggleButton sx={{ paddingLeft: 2, paddingRight: 2 }} value="split">
-            Split
-          </ToggleButton>
-          <ToggleButton
-            sx={{ paddingRight: 2, paddingLeft: 2 }}
-            value="unified"
+      <HaventStarted hide={hasResults ? "true" : "false"}>
+        <HaventStartedText>Enter contract addresses above</HaventStartedText>
+      </HaventStarted>
+      <Results hide={!hasResults ? "true" : "false"}>
+        <Summary>
+          <CollapseAndText>
+            {Collapse}
+            <LineChanges>
+              <div>
+                Showing {changedText} with {addedText} and {removedText}.
+              </div>
+            </LineChanges>
+          </CollapseAndText>
+          <ToggleButtonGroup
+            size="small"
+            value={splitView ? "split" : "unified"}
+            exclusive
+            aria-label="Platform"
+            onChange={onViewChange}
           >
-            Unified
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Summary>
-      <Layout hidefiles={hidefiles}>
-        <FileList hidefiles={hidefiles} setHideFiles={setHideFiles} />
-        <div>
-          <FileDiff
-            fileName="LDEI.sol"
-            oldCode={oldCode}
-            newCode={newCode}
-            splitView={splitView}
-          />
-          <FileDiff
-            fileName="LDEIUpgradeable.sol"
-            oldCode={oldCode}
-            newCode={newCode}
-            splitView={splitView}
-          />
-        </div>
-      </Layout>
+            <ToggleButton
+              sx={{ paddingLeft: 2, paddingRight: 2 }}
+              value="split"
+            >
+              Split
+            </ToggleButton>
+            <ToggleButton
+              sx={{ paddingRight: 2, paddingLeft: 2 }}
+              value="unified"
+            >
+              Unified
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Summary>
+        <Layout hidefiles={hidefiles}>
+          <FileList hidefiles={hidefiles} setHideFiles={setHideFiles} />
+          <div>
+            <FileDiff
+              fileName="LDEI.sol"
+              oldCode={oldCode}
+              newCode={newCode}
+              splitView={splitView}
+            />
+            <FileDiff
+              fileName="LDEIUpgradeable.sol"
+              oldCode={oldCode}
+              newCode={newCode}
+              splitView={splitView}
+            />
+          </div>
+        </Layout>
+      </Results>
     </Wrapper>
   );
 }

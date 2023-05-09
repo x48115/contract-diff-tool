@@ -70,3 +70,15 @@ body {
   position: auto;
   height: auto;
 }
+
+@keyframes slow-blink {
+  0% {
+    color: rgba(255, 255, 255, 1);
+  }
+  50% {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    color: rgba(255, 255, 255, 1);
+  }
+}
