@@ -5,68 +5,22 @@ import prettierPluginSolidity from "prettier-plugin-solidity";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useSplitView, useHideFiles, useTheme } from "../hooks";
+
 import {
-  ContentCopy,
-  OpenInNew,
-  Search,
-  ExpandMore,
-  ExpandLess,
-  UnfoldMore,
-} from "@mui/icons-material";
-import {
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   ToggleButtonGroup,
   SvgIcon,
   ToggleButton,
   IconButton,
-  InputAdornment,
   Tooltip,
 } from "@mui/material";
 
 import { setSplitView, setHideFiles } from "../store/options";
 import ChainSelector from "../components/ChainSelector";
+import AddressInput from "../components/AddressInput";
+import FileList from "../components/FileList";
+import FileDiff from "../components/FileDiff";
 
 const prettierPlugins = [prettierPluginSolidity];
-
-const FileList = styled.div`
-  margin-top: 20px;
-  display: flex;
-  grid-gap: 0px;
-  flex-direction: column;
-`;
-
-const File = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const EditedShift = styled.div`
-  position: relative;
-  left: 11px;
-`;
-
-const EditedIcon = (
-  <EditedShift>
-    <SvgIcon sx={{ color: "#c7881b", fontSize: 30 }}>
-      <path d="M13.25 1c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25V2.75C1 1.784 1.784 1 2.75 1ZM2.75 2.5a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM8 10a2 2 0 1 1-.001-3.999A2 2 0 0 1 8 10Z"></path>
-    </SvgIcon>
-  </EditedShift>
-);
-
-const Wrapper = styled.div`
-  border-radius: 6px;
-  overflow: hidden;
-  border: 1px solid #30363d;
-  left: 0px;
-  right: 0px;
-  margin-bottom: 30px;
-`;
-
-const Source = styled.div``;
 
 const CollapseAndText = styled.div`
   display: flex;
@@ -84,17 +38,6 @@ const CollapseWrap = styled.div`
     opacity: 1;
   }
   transform: ${(props) => (props.hidefiles === "true" ? "rotate(180deg)" : "")};
-`;
-
-const TitleWrapper = styled.div`
-  position: relative;
-  left: 0px;
-  display: inline;
-`;
-
-const ShiftRight = styled.div`
-  position: relative;
-  left: 10px;
 `;
 
 const Summary = styled.div`
@@ -121,12 +64,6 @@ const SearchField = styled.div`
   grid-template-columns: 1fr 1fr;
 `;
 
-const SearchIconWrapper = styled.div`
-  position: relative;
-  width: 15px;
-  left: -7px;
-`;
-
 const LineChanges = styled.div`
   display: inline-flex;
   align-items: center;
@@ -139,7 +76,7 @@ const Contract = styled.div`
   width: 100%;
 `;
 
-const Padding = styled.div`
+const Wrapper = styled.div`
   margin: 0px 0px;
   padding-botom: 20px;
   position: absolute;
@@ -153,26 +90,6 @@ const Layout = styled.div`
     props.hidefiles === "true" ? "auto" : "300px auto"};
   grid-gap: 20px;
   margin: 0px 30px;
-`;
-
-const LeftNav = styled.div`
-  width: 290px;
-  height: 79px;
-  position: sticky;
-  top: 79px;
-  display: ${(props) => (props.hidefiles === "true" ? "none" : "auto")};
-`;
-
-const SourceHeader = styled.div`
-  background-color: #121519;
-  width: 100%;
-  line-height: 32px;
-  color: white;
-  padding: 10px 20px;
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
-    Liberation Mono, monospace;
-  display: flex;
-  justify-content: space-between;
 `;
 
 let oldCode = `
@@ -275,18 +192,6 @@ contract DEIStablecoin is
 }
 `;
 
-const customStyles = {
-  codeFoldGutter: {
-    // display: "none",
-    // display
-  },
-  codeFold: {
-    // backgroundColor: "#0e1623",
-    padding: "0px",
-    margin: "0px",
-  },
-};
-
 function App() {
   const hidefiles = useHideFiles();
   const splitView = useSplitView();
@@ -331,26 +236,6 @@ function App() {
     </Tooltip>
   );
 
-  const codeFoldMessageRenderer = (str) => {
-    return (
-      <Tooltip title="Expand" placement="top">
-        <IconButton size="small" edge="end">
-          <UnfoldMore sx={{ fontSize: 24 }} />
-        </IconButton>
-      </Tooltip>
-    );
-  };
-  // eslint-disable-next-line
-  const highlightSyntax = (str) => (
-    <pre
-      style={{ display: "inline" }}
-      dangerouslySetInnerHTML={{
-        // eslint-disable-next-line
-        __html: Prism.highlight(str || "", Prism.languages.solidity),
-      }}
-    />
-  );
-
   const onViewChange = (evt) => {
     dispatch(setSplitView(evt.target.value === "split" ? true : false));
   };
@@ -368,95 +253,20 @@ function App() {
     plugins: prettierPlugins,
   });
   return (
-    <Padding>
+    <Wrapper>
       <SearchField>
         <Contract>
-          <TextField
-            id="outlined-basic"
-            label="Address 1"
-            size="small"
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
-            InputProps={{
-              placeholder: "0x...",
-              endAdornment: (
-                <ShiftRight>
-                  <InputAdornment position="start">
-                    <Tooltip title="Copy">
-                      <IconButton
-                        aria-label="copy"
-                        size="small"
-                        edge="end"
-                        tooltip={
-                          <div>
-                            First Line
-                            <br />
-                            Second Line
-                          </div>
-                        }
-                        tooltipPosition="top-center"
-                      >
-                        <ContentCopy sx={{ fontSize: 16 }} />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="View in explorer">
-                      <IconButton size="small" edge="end">
-                        <OpenInNew sx={{ fontSize: 16 }} />
-                      </IconButton>
-                    </Tooltip>
-                  </InputAdornment>
-                </ShiftRight>
-              ),
-            }}
-          />
+          <AddressInput label="Address 1" />
           <ChainSelector />
         </Contract>
         <Contract>
-          <TextField
-            id="outlined-basic"
-            label="Address 2"
-            size="small"
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
-            InputProps={{
-              placeholder: "0x...",
-              endAdornment: (
-                <ShiftRight>
-                  <InputAdornment position="start">
-                    <Tooltip title="Copy">
-                      <IconButton aria-label="copy" size="small" edge="end">
-                        <ContentCopy sx={{ fontSize: 16 }} />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="View in explorer" placement="top">
-                      <IconButton aria-label="open" size="small" edge="end">
-                        <OpenInNew sx={{ fontSize: 16 }} />
-                      </IconButton>
-                    </Tooltip>
-                  </InputAdornment>
-                </ShiftRight>
-              ),
-            }}
-          />
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Network</InputLabel>
-            <Select
-              size="small"
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="Network"
-              value={1}
-            >
-              <MenuItem value={1}>Ethereum</MenuItem>
-              <MenuItem value={20}>Fantom</MenuItem>
-            </Select>
-          </FormControl>
+          <AddressInput label="Address 2" />
+          <ChainSelector />
         </Contract>
       </SearchField>
       <Summary>
         <CollapseAndText>
           {Collapse}
-
           <LineChanges>
             <div>
               Showing {changedText} with {addedText} and {removedText}.
@@ -482,120 +292,23 @@ function App() {
         </ToggleButtonGroup>
       </Summary>
       <Layout hidefiles={hidefiles}>
-        <LeftNav hidefiles={hidefiles}>
-          <TextField
-            id="outlined-basic"
-            label=""
-            size="small"
-            variant="outlined"
-            fullWidth
-            InputProps={{
-              placeholder: "Filter changed files",
-              startAdornment: (
-                <InputAdornment position="start" disablePointerEvents={true}>
-                  <SearchIconWrapper>
-                    <IconButton aria-label="open" size="small" edge="start">
-                      <Search sx={{ fontSize: 22, opacity: 0.5 }} />
-                    </IconButton>
-                  </SearchIconWrapper>
-                </InputAdornment>
-              ),
-            }}
+        <FileList hidefiles={hidefiles} setHideFiles={setHideFiles} />
+        <div>
+          <FileDiff
+            fileName="LDEI.sol"
+            oldCode={oldCode}
+            newCode={newCode}
+            splitView={splitView}
           />
-          <FileList>
-            <File>
-              <div>LDEI.sol</div>
-              {EditedIcon}
-            </File>
-            <File>
-              <div>LERC20Upgradable.sol</div>
-              {EditedIcon}
-            </File>
-          </FileList>
-        </LeftNav>
-        <Source>
-          <Wrapper>
-            <SourceHeader>
-              <div>
-                <Tooltip title="Close" placement="top">
-                  <IconButton
-                    sx={{
-                      position: "relative",
-                      height: 30,
-                      width: 30,
-                      left: -10,
-                    }}
-                  >
-                    <ExpandMore
-                      sx={{
-                        fontSize: 30,
-                        opacity: 0.5,
-                      }}
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Expand all" placement="top">
-                  <IconButton
-                    sx={{
-                      position: "relative",
-                      left: -10,
-                      height: 30,
-                      width: 30,
-                    }}
-                  >
-                    <UnfoldMore
-                      sx={{
-                        fontSize: 24,
-                        opacity: 0.5,
-                      }}
-                    />
-                  </IconButton>
-                </Tooltip>
-                <TitleWrapper>LDEI.sol</TitleWrapper>
-              </div>
-              <Tooltip title="Copy" placement="top">
-                <IconButton
-                  aria-label="copy"
-                  sx={{ position: "relative", left: 12, height: 35, width: 35 }}
-                >
-                  <ContentCopy sx={{ opacity: 0.5, fontSize: 20 }} />
-                </IconButton>
-              </Tooltip>
-            </SourceHeader>
-            <ReactDiffViewer
-              oldValue={oldCode}
-              newValue={newCode}
-              splitView={splitView}
-              showDiffOnly={true}
-              useDarkTheme={true}
-              renderContent={highlightSyntax}
-              codeFoldMessageRenderer={codeFoldMessageRenderer}
-              styles={customStyles}
-            />
-          </Wrapper>
-          <Wrapper>
-            <SourceHeader>
-              <div>LDEI.sol</div>
-              <Tooltip title="Copy">
-                <IconButton size="small">
-                  <ContentCopy fontSize="inherit" />
-                </IconButton>
-              </Tooltip>
-            </SourceHeader>
-            <ReactDiffViewer
-              oldValue={oldCode}
-              newValue={newCode}
-              splitView={splitView}
-              showDiffOnly={true}
-              useDarkTheme={true}
-              renderContent={highlightSyntax}
-              codeFoldMessageRenderer={codeFoldMessageRenderer}
-              styles={customStyles}
-            />
-          </Wrapper>
-        </Source>
+          <FileDiff
+            fileName="LDEIUpgradeable.sol"
+            oldCode={oldCode}
+            newCode={newCode}
+            splitView={splitView}
+          />
+        </div>
       </Layout>
-    </Padding>
+    </Wrapper>
   );
 }
 
