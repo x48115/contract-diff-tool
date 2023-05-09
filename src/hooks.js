@@ -1,5 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import { selectTheme, selectHideFiles, selectSplitView } from "./store/options";
+import {
+  selectTheme,
+  selectHideFiles,
+  selectSplitView,
+  selectNetwork1,
+  selectNetwork2,
+} from "./store/options";
 
 import { selectChains } from "./store/chains";
 
@@ -10,3 +16,5 @@ export const useTheme = () => useSelector(selectTheme);
 export const useSplitView = () => useSelector(selectSplitView);
 export const useHideFiles = () => useSelector(selectHideFiles);
 export const useSelectChains = () => useSelector(selectChains);
+export const useSelectNetwork1 = () => useSelector(selectNetwork1);
+export const useSelectNetwork2 = () => useSelector(selectNetwork2);

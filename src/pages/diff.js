@@ -3,14 +3,19 @@ import ReactDiffViewer from "react-diff-viewer-continued";
 import prettier from "prettier";
 import prettierPluginSolidity from "prettier-plugin-solidity";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { useSplitView, useHideFiles, useTheme } from "../hooks";
+import { useDispatch } from "react-redux";
+import {
+  useSplitView,
+  useHideFiles,
+  useSelectNetwork1,
+  useSelectNetwork2,
+  useSelectChains,
+} from "../hooks";
 
 import {
   ToggleButtonGroup,
   SvgIcon,
   ToggleButton,
-  IconButton,
   Tooltip,
 } from "@mui/material";
 
@@ -220,6 +225,37 @@ function App() {
   const [changedText, setChangedText] = useState("2 changed files");
   const [contracts, setContracts] = useState({});
 
+  const [address1State, setAddress1State] = useState({
+    valid: false,
+    address: "",
+  });
+  const [address2State, setAddress2State] = useState({
+    valid: false,
+    address: "2",
+  });
+
+  const network1 = useSelectNetwork1();
+  const network2 = useSelectNetwork2();
+  const chains = useSelectChains();
+
+  const chainsLength = Object.keys(chains).length;
+  useEffect(() => {
+    if (address1State.value && address2State.value && chainsLength) {
+      console.log("trite dog", network2);
+      window.history.replaceState(
+        {},
+        "",
+        `/diff?address1=${address1State.value}&chain1=${network1}&address2=${address2State.value}&chain2=${network2}`
+      );
+    }
+  }, [
+    address1State.value,
+    address2State.value,
+    network1,
+    network2,
+    chainsLength,
+  ]);
+
   useEffect(() => {
     const added = document.querySelectorAll(
       "[class*='gutter'][class*='diff-added']"
@@ -272,18 +308,28 @@ function App() {
     plugins: prettierPlugins,
   });
 
-  const hasResults = Object.keys(contracts).length > 0;
+  const hasResults = !(address1State.valid && address2State.valid);
 
   return (
     <Wrapper>
       <SearchField>
         <Contract>
-          <AddressInput label="Address 1" />
-          <ChainSelector />
+          <AddressInput
+            label="Address 1"
+            addressState={address1State}
+            setAddressState={setAddress1State}
+            field={1}
+          />
+          <ChainSelector field={1} />
         </Contract>
         <Contract>
-          <AddressInput label="Address 2" />
-          <ChainSelector />
+          <AddressInput
+            label="Address 2"
+            addressState={address2State}
+            setAddressState={setAddress2State}
+            field={2}
+          />
+          <ChainSelector field={2} />
         </Contract>
       </SearchField>
       <HaventStarted hide={hasResults ? "true" : "false"}>
