@@ -212,7 +212,6 @@ const HaventStarted = styled.div`
 
 const HaventStartedText = styled.div`
   font-size: 40px;
-  animation: slow-blink normal 2s infinite ease-in-out;
 `;
 
 function App() {
