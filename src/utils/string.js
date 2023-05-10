@@ -19,6 +19,9 @@ export const getRelativeTime = (d1, d2 = new Date()) => {
 };
 
 export function shortenAddress(address, chars = 4) {
+  if (address === "") {
+    return "";
+  }
   if (address.endsWith(".eth")) {
     return address;
   }
@@ -26,3 +29,37 @@ export function shortenAddress(address, chars = 4) {
     42 - chars
   )}`;
 }
+
+export const mergeDeep = (target, ...sources) => {
+  if (!sources.length) return target;
+  const source = sources.shift();
+
+  if (target instanceof Object && source instanceof Object) {
+    for (const key in source) {
+      if (source[key] instanceof Object) {
+        if (!target[key]) Object.assign(target, { [key]: {} });
+        mergeDeep(target[key], source[key]);
+      } else {
+        Object.assign(target, { [key]: source[key] });
+      }
+    }
+  }
+  return mergeDeep(target, ...sources);
+};
+
+export const getEndOfPath = (path) => {
+  const parts = path.split("/");
+  const name = parts[parts.length - 1];
+  return name;
+};
+
+export const highlight = (needle, haystack) => {
+  const reg = new RegExp(needle, "gi");
+  return (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: haystack.replace(reg, (str) => "<u>" + str + "</u>"),
+      }}
+    />
+  );
+};

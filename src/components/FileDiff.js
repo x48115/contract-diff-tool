@@ -60,6 +60,7 @@ const FileInfos = styled.div`
   grid-template-columns: 1fr 1fr;
   width: 100%;
   background-color: #222;
+  display: ${(props) => (props.splitview === "true" ? "" : "none")};
 `;
 
 const FileInfo = styled.div`
@@ -68,8 +69,12 @@ const FileInfo = styled.div`
   height: 40px;
   align-items: center;
   padding-left: 20px;
+  padding-right: 20px;
   color: #555;
   justify-content: space-between;
+  &:first-of-type {
+    border-right: 1px solid #292929;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -90,16 +95,11 @@ const customStyles = {
   },
 };
 
-const Right = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
+const OverflowHidden = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
-const ExpandMoreWrap = styled.div`
-  display: inline-block;
-  transform: ${(props) => (props.collapsed === "true" ? "rotate(180deg)" : "")};
-`;
 const codeFoldMessageRenderer = (str) => {
   return (
     <Tooltip title="Expand" placement="top">
@@ -121,7 +121,14 @@ const highlightSyntax = (str) => (
   />
 );
 
-export default ({ oldCode, newCode, splitView, fileName }) => {
+export default ({
+  oldCode,
+  newCode,
+  splitView,
+  fileName,
+  address1,
+  address2,
+}) => {
   const [collapsed, setCollapsed] = useState("false");
   const [expandAll, setExpandAll] = useState(false);
 
@@ -130,7 +137,7 @@ export default ({ oldCode, newCode, splitView, fileName }) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper id={fileName}>
       <SourceHeader>
         <div>
           <Tooltip
@@ -177,25 +184,13 @@ export default ({ oldCode, newCode, splitView, fileName }) => {
         </div>
       </SourceHeader>
       <FileHeader>
-        <FileInfos>
+        <FileInfos splitview={splitView.toString()}>
           <FileInfo>
-            <div>
-              {shortenAddress("0xde1e704dae0b4051e80dabb26ab6ad6c12262da0", 10)}
-            </div>
-            <Tooltip title="File Menu" placement="top">
-              <FileMore>
-                <IconButton size="small" edge="end">
-                  <MoreHoriz sx={{ fontSize: 24 }} />
-                </IconButton>
-              </FileMore>
-            </Tooltip>
-          </FileInfo>{" "}
+            <OverflowHidden>{address1}</OverflowHidden>
+          </FileInfo>
           <FileInfo>
-            <div>
-              {shortenAddress("0xde1e704dae0b4051e80dabb26ab6ad6c12262da0", 10)}
-            </div>
-
-            <Tooltip
+            <OverflowHidden>{address2}</OverflowHidden>
+            {/* <Tooltip
               arrow
               PopperProps={{
                 sx: {
@@ -271,7 +266,7 @@ export default ({ oldCode, newCode, splitView, fileName }) => {
                   <MoreHoriz sx={{ fontSize: 24 }} />
                 </IconButton>
               </FileMore>
-            </Tooltip>
+            </Tooltip> */}
           </FileInfo>
         </FileInfos>
       </FileHeader>

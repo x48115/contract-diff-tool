@@ -42,5 +42,17 @@ export const selectNetwork1 = (state) => state.options.network1;
 export const selectNetwork2 = (state) => state.options.network2;
 export const selectHideFiles = (state) => state.options.hideFiles;
 export const selectSplitView = (state) => state.options.splitView;
+export const selectExplorer1 = (state) =>
+  state.chains.list.length &&
+  state.options.network1 &&
+  state.chains.list.find(
+    (chain) => chain.chainId === parseInt(state.options.network1)
+  ).explorers[0].url;
+export const selectExplorer2 = (state) =>
+  state.chains.list.length &&
+  state.options.network2 &&
+  state.chains.list.find(
+    (chain) => chain.chainId === parseInt(state.options.network2)
+  ).explorers[0].url;
 
 export default slice.reducer;

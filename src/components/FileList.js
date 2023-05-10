@@ -1,6 +1,8 @@
 import { SvgIcon } from "@mui/material";
 import styled from "styled-components";
 import Filter from "./Filter";
+import { getEndOfPath, highlight } from "../utils/string";
+import { useState } from "react";
 
 const LeftNav = styled.div`
   width: 290px;
@@ -20,11 +22,19 @@ const FileList = styled.div`
 const FileHeader = styled.div`
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
+  &:hover {
+    background-color: #333;
+  }
+  user-select: none;
+  align-items: center;
+  padding: 0px 10px;
 `;
 
 const EditedShift = styled.div`
   position: relative;
   left: 11px;
+  top: 7px;
 `;
 
 const EditedIcon = (
@@ -35,20 +45,45 @@ const EditedIcon = (
   </EditedShift>
 );
 
-export default ({ hidefiles, setHideFiles }) => {
+export default ({
+  hidefiles,
+  contracts,
+  filteredContracts,
+  setFilteredContracts,
+}) => {
+  const [filter, setFilter] = useState("");
+
+  const scrollTo = (id) => {
+    const target = document.getElementById(id).getBoundingClientRect();
+    window.scroll(0, window.scrollY + target.top - 79);
+  };
+
+  const files = (
+    <FileList>
+      {filteredContracts.map((contract) => {
+        const fileName = getEndOfPath(contract.name);
+        return (
+          <FileHeader
+            key={contract.name}
+            onClick={() => scrollTo(contract.name)}
+          >
+            <div>{highlight(filter, fileName)}</div>
+            {EditedIcon}
+          </FileHeader>
+        );
+      })}
+    </FileList>
+  );
+
   return (
     <LeftNav hidefiles={hidefiles}>
-      <Filter />
-      <FileList>
-        <FileHeader>
-          <div>LDEI.sol</div>
-          {EditedIcon}
-        </FileHeader>
-        <FileHeader>
-          <div>LERC20Upgradable.sol</div>
-          {EditedIcon}
-        </FileHeader>
-      </FileList>
+      <Filter
+        contracts={contracts}
+        setFilteredContracts={setFilteredContracts}
+        filter={filter}
+        setFilter={setFilter}
+      />
+      {files}
     </LeftNav>
   );
 };

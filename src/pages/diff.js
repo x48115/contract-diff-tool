@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
-import ReactDiffViewer from "react-diff-viewer-continued";
 import prettier from "prettier";
 import prettierPluginSolidity from "prettier-plugin-solidity";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
+import { mergeDeep } from "../utils/string";
 import {
   useSplitView,
   useHideFiles,
   useSelectNetwork1,
   useSelectNetwork2,
   useSelectChains,
+  useSelectExplorer1,
+  useSelectExplorer2,
 } from "../hooks";
 
 import {
@@ -101,106 +103,6 @@ const Results = styled.div`
   display: ${(props) => (props.hide === "true" ? "none" : "")};
 `;
 
-let oldCode = `
-// SPDX-License-Identifier: GPLv3
-pragma solidity 0.8.4;
-
-import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "./LERC20Upgradable.sol";
-
-/// @title DEI stablecoin
-/// @author DEUS Finance
-contract DEIStablecoin is
-    Initializable,
-    LERC20Upgradable,
-    AccessControlUpgradeable
-{
-           bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
-
-    function initialize(
-        uint256 totalSupply,
-        address admin,
-        address recoveryAdmin,
-        uint256 timelockPeriod,
-        address lossless
-    ) public initializer {
-        __LERC20_init(
-            totalSupply,
-            "DEI",
-            "DEI",
-            admin,
-            recoveryAdmin,
-            timelockPeriod,
-            lossless
-        );
-        __AccessControl_init();
-        _grantRole(DEFAULT_ADMIN_ROLE, admin);
-    }
-
-    function mint(address to, uint256 amount) external onlyRole(MINTER_ROLE) {
-          _mint(to, amount);
-    }
-
-              function burnFrom(address from, uint256 amount)
-        public
-        onlyRole(BURNER_ROLE)
-    {
-        _burn(from, amount);
-    }
-}
-`;
-
-let newCode = `
-// SPDX-License-Identifier: GPLv3
-pragma solidity 0.8.4;
-
-import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "./LERC20Upgradable.sol";
-
-/**
- * @title DEI Stablecoin
- * @author DEUS Finance
- * @notice Multichain stablecoin
- */
-contract DEIStablecoin is
-    Initializable,
-    LERC20Upgradable,
-    AccessControlUpgradeable
-{
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
-
-    function initialize(
-        uint256 totalSupply,
-        address admin,
-        address recoveryAdmin,
-        uint256 timelockPeriod,
-        address lossless
-    ) public initializer {
-        __LERC20_init(
-            totalSupply,
-            "DEI",
-            "DEI",
-            admin,
-            recoveryAdmin,
-            timelockPeriod,
-            lossless
-        );
-        __AccessControl_init();
-        _grantRole(DEFAULT_ADMIN_ROLE, admin);
-    }
-
-        function mint(address to, uint256 amount) external onlyRole(MINTER_ROLE) {
-        _mint(to, amount);
-    }
-}
-`;
-
 const HaventStarted = styled.div`
   width: 100%;
   display: flex;
@@ -222,7 +124,11 @@ function App() {
   const [addedText, setAddedText] = useState("");
   const [removedText, setRemovedText] = useState("");
   const [changedText, setChangedText] = useState("2 changed files");
-  const [contracts, setContracts] = useState({});
+
+  const [contracts, setContracts] = useState([]);
+  const [filteredContracts, setFilteredContracts] = useState(contracts);
+  const [code1, setCode1] = useState([]);
+  const [code2, setCode2] = useState([]);
 
   const [address1State, setAddress1State] = useState({
     valid: false,
@@ -230,30 +136,137 @@ function App() {
   });
   const [address2State, setAddress2State] = useState({
     valid: false,
-    address: "2",
+    address: "",
   });
+  const [hasResults, setHasResults] = useState(false);
+  const [previousAddress1, setPreviousAddress1] = useState("");
+  const [previousAddress2, setPreviousAddress2] = useState("");
+  const [previousNetwork1, setPreviousNetwork1] = useState(network1);
+  const [previousNetwork2, setPreviousNetwork2] = useState(network2);
 
   const network1 = useSelectNetwork1();
   const network2 = useSelectNetwork2();
   const chains = useSelectChains();
+  const explorer1 = useSelectExplorer1();
+  const explorer2 = useSelectExplorer2();
 
-  const chainsLength = Object.keys(chains).length;
+  const hasAddresses = address1State.value !== "" && address2State.value !== "";
+  const hasChains = Object.keys(chains).length;
+  const addressesValid = address1State.valid && address2State.valid;
+  const address1Changed = address1State.value !== previousAddress1;
+  const address2Changed = address2State.value !== previousAddress2;
+
+  // Merge sources
   useEffect(() => {
-    if (address1State.value && address2State.value && chainsLength) {
-      console.log("trite dog", network2);
-      window.history.replaceState(
-        {},
-        "",
-        `/diff?address1=${address1State.value}&chain1=${network1}&address2=${address2State.value}&chain2=${network2}`
-      );
+    const code1Mapped = code1.map((code) => ({
+      name: code.name,
+      source1: code.source,
+      address1: code.address,
+    }));
+    const code2Mapped = code2.map((code) => ({
+      name: code.name,
+      source2: code.source,
+      address2: code.address,
+    }));
+    const aKeyed = code1Mapped.reduce(
+      (acc, cur) => ({ ...acc, [cur.name]: cur }),
+      {}
+    );
+    const bKeyed = code2Mapped.reduce(
+      (acc, cur) => ({ ...acc, [cur.name]: cur }),
+      {}
+    );
+    const merged = Object.values(mergeDeep(aKeyed, bKeyed));
+
+    const mergedAndUnique = merged.filter(
+      (contracts) =>
+        contracts.source1 !== contracts.source2 &&
+        contracts.source1 &&
+        contracts.source2
+    );
+
+    setContracts(mergedAndUnique);
+  }, [code1, code2]);
+
+  const delay = (time) => {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  };
+
+  const getSourceCode = async (field, address) => {
+    let explorer;
+    if (field === 1) {
+      explorer = explorer1;
+    } else {
+      explorer = explorer2;
     }
-  }, [
-    address1State.value,
-    address2State.value,
-    network1,
-    network2,
-    chainsLength,
-  ]);
+    const url = `https://api.${
+      new URL(explorer).hostname
+    }/api?module=contract&action=getsourcecode&address=${address}`;
+    console.log("get", field, address, url);
+    let data = await fetch(url).then((res) => res.json());
+    console.log("raw resp", data);
+    const notOk = data.status === "0";
+    if (notOk) {
+      await delay(1000);
+      console.log("retry");
+      getSourceCode(field, address);
+      return;
+    }
+    if (data.result[0].SourceCode === "") {
+      console.log("not verified");
+      return;
+    }
+    const dataz = JSON.parse(data.result[0].SourceCode.slice(1, -1)).sources;
+
+    const sources = [];
+    for (const [name, sourceObj] of Object.entries(dataz)) {
+      const source = sourceObj.content;
+      sources.push({ name, source, address });
+    }
+    if (field === 1) {
+      setCode1(sources);
+    } else {
+      setCode2(sources);
+    }
+  };
+
+  useEffect(() => {
+    if (hasAddresses && hasChains) {
+      const addressesChanged = address1Changed || address2Changed;
+
+      if (addressesValid && addressesChanged) {
+        setHasResults(true);
+      }
+      if (address1Changed && address1State.valid) {
+        getSourceCode(1, address1State.value);
+        setPreviousAddress1(address1State.value);
+      }
+      if (address2Changed && address2State.valid) {
+        getSourceCode(2, address2State.value);
+        setPreviousAddress2(address2State.value);
+      }
+      if (!(address1Changed || address2Changed)) {
+        if (network1 !== previousNetwork1) {
+          getSourceCode(1, address1State.value);
+          setPreviousNetwork1(network1);
+        }
+        if (network2 !== previousNetwork2) {
+          getSourceCode(2, address1State.value);
+          setPreviousNetwork1(network1);
+        }
+      }
+      if (address1State.value && address2State.value)
+        window.history.replaceState(
+          {},
+          "",
+          `/diff?address1=${address1State.value}&chain1=${network1}&address2=${address2State.value}&chain2=${network2}`
+        );
+    } else {
+      if (hasAddresses) {
+        setHasResults(false);
+      }
+    }
+  }, [address1State.value, address2State.value, network1, network2, hasChains]);
 
   useEffect(() => {
     const added = document.querySelectorAll(
@@ -262,12 +275,26 @@ function App() {
     const removed = document.querySelectorAll(
       "[class*='gutter'][class*='diff-removed']"
     ).length;
+    const changed = filteredContracts.length;
     const addedSuffix = added === 0 || added > 1 ? "s" : "";
     const removedSuffix = removed === 0 || removed > 1 ? "s" : "";
-    setChangedText(<b>2 changed files</b>);
-    setAddedText(<b>{`${added} addition${addedSuffix}`}</b>);
-    setRemovedText(<b>{`${removed} deletion${removedSuffix}`}</b>);
-  }, []);
+    const changedSuffix = changed === 0 || changed > 1 ? "s" : "";
+    setChangedText(
+      <b>
+        {changed} changed file{changedSuffix}
+      </b>
+    );
+    setAddedText(
+      <b>
+        {added} addition{addedSuffix}
+      </b>
+    );
+    setRemovedText(
+      <b>
+        {removed} deletion{removedSuffix}
+      </b>
+    );
+  }, [filteredContracts]);
 
   const toggleHideFiles = () => {
     dispatch(setHideFiles(hidefiles === "true" ? "fasle" : "true"));
@@ -295,19 +322,26 @@ function App() {
   };
 
   // eslint-disable-next-line
-  oldCode = prettier.format(oldCode, {
-    parser: "solidity-parse",
-    // eslint-disable-next-line
-    plugins: prettierPlugins,
-  });
-  // eslint-disable-next-line
-  newCode = prettier.format(newCode, {
-    parser: "solidity-parse",
-    // eslint-disable-next-line
-    plugins: prettierPlugins,
-  });
+  const formatCode = (code) =>
+    prettier.format(code, {
+      parser: "solidity-parse",
+      // eslint-disable-next-line
+      plugins: prettierPlugins,
+    });
 
-  const hasResults = !(address1State.valid && address2State.valid);
+  const diffs =
+    filteredContracts &&
+    filteredContracts.map((item) => (
+      <FileDiff
+        key={item.name}
+        address1={item.address1 || ""}
+        address2={item.address2 || ""}
+        fileName={item.name}
+        oldCode={item.source1 ? formatCode(item.source1) : ""}
+        newCode={item.source2 ? formatCode(item.source2) : ""}
+        splitView={splitView}
+      />
+    ));
 
   return (
     <Wrapper>
@@ -366,21 +400,14 @@ function App() {
           </ToggleButtonGroup>
         </Summary>
         <Layout hidefiles={hidefiles}>
-          <FileList hidefiles={hidefiles} setHideFiles={setHideFiles} />
-          <div>
-            <FileDiff
-              fileName="LDEI.sol"
-              oldCode={oldCode}
-              newCode={newCode}
-              splitView={splitView}
-            />
-            <FileDiff
-              fileName="LDEIUpgradeable.sol"
-              oldCode={oldCode}
-              newCode={newCode}
-              splitView={splitView}
-            />
-          </div>
+          <FileList
+            hidefiles={hidefiles}
+            contracts={contracts}
+            filteredContracts={filteredContracts}
+            setFilteredContracts={setFilteredContracts}
+            setHideFiles={setHideFiles}
+          />
+          <div>{diffs}</div>
         </Layout>
       </Results>
     </Wrapper>

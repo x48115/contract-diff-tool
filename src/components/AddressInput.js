@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { toChecksumAddress } from "ethereum-checksum-address";
 import {
   useSelectChains,
+  useSelectExplorer1,
+  useSelectExplorer2,
   useSelectNetwork1,
   useSelectNetwork2,
 } from "../hooks";
@@ -14,16 +16,17 @@ const ShiftRight = styled.div`
   left: 10px;
 `;
 
-const CheckDisabled = styled.div``;
-
 export default ({ label, addressState, setAddressState, field }) => {
   const network1 = useSelectNetwork1();
   const network2 = useSelectNetwork2();
   const chains = useSelectChains();
+  const explorer1 = useSelectExplorer1();
+  const explorer2 = useSelectExplorer2();
   const networkId = field === 1 ? network1 : network2;
-  const chain = chains.find((chain) => chain.chainId === networkId);
-  const explorerAddress = chain
-    ? `${chain.explorers[0].url}/address/${addressState.value}`
+  const explorer = field === 1 ? explorer1 : explorer2;
+
+  const explorerAddress = explorer
+    ? `${explorer}/address/${addressState.value}`
     : "";
 
   const copy = () => {
@@ -82,6 +85,7 @@ export default ({ label, addressState, setAddressState, field }) => {
                 <div>
                   <IconButton
                     disabled={!addressState.valid}
+                    tabIndex={-1}
                     onClick={copy}
                     size="small"
                     edge="end"
@@ -94,6 +98,7 @@ export default ({ label, addressState, setAddressState, field }) => {
                 <div>
                   <IconButton
                     size="small"
+                    tabIndex={-1}
                     edge="end"
                     onClick={openAddress}
                     disabled={!addressState.valid}

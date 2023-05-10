@@ -5,6 +5,8 @@ import {
   selectSplitView,
   selectNetwork1,
   selectNetwork2,
+  selectExplorer1,
+  selectExplorer2,
 } from "./store/options";
 
 import { selectChains } from "./store/chains";
@@ -18,3 +20,5 @@ export const useHideFiles = () => useSelector(selectHideFiles);
 export const useSelectChains = () => useSelector(selectChains);
 export const useSelectNetwork1 = () => useSelector(selectNetwork1);
 export const useSelectNetwork2 = () => useSelector(selectNetwork2);
+export const useSelectExplorer1 = () => useSelector(selectExplorer1);
+export const useSelectExplorer2 = () => useSelector(selectExplorer2);
