@@ -13,7 +13,6 @@ import {
 import {
   ExpandMore,
   UnfoldMore,
-  Code,
   Download,
   MoreHoriz,
   ContentCopy,
@@ -21,12 +20,37 @@ import {
   OpenInNew,
 } from "@mui/icons-material";
 import { useState } from "react";
+import { useSelectSelectedFile } from "../hooks";
 import { shortenAddress } from "../utils/string";
 
 const TitleWrapper = styled.div`
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  left: 80px;
+  position: absolute;
+  right: 30px;
+`;
+
+const AddressWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  color: rgb(153, 153, 153);
+  left: 5px;
   position: relative;
-  left: 0px;
-  display: inline;
+  height: 25px;
+`;
+
+const MoreWrap = styled.div`
+  position: absolute;
+  right: 0px;
+  top: -4px;
+`;
+
+const AddressTitleWrap = styled.div`
+  position: absolute;
+  left: 0;
 `;
 
 const SourceHeader = styled.div`
@@ -80,7 +104,8 @@ const FileInfo = styled.div`
 const Wrapper = styled.div`
   margin-bottom: 20px;
   border-radius: 6px;
-  border: 1px solid #30363d;
+  border: ${(props) =>
+    props.selected ? "2px solid #2f81f7" : "1px solid #30363d"};
   overflow: hidden;
 `;
 
@@ -121,6 +146,101 @@ const highlightSyntax = (str) => (
   />
 );
 
+const copy = (text) => {
+  navigator.clipboard.writeText(text);
+};
+
+const renderAddress = (address, field, source, sources) => (
+  <AddressWrap>
+    <AddressTitleWrap title={address}>
+      {shortenAddress(address, 10)}
+    </AddressTitleWrap>
+    {address && (
+      <MoreWrap>
+        <Tooltip
+          arrow
+          PopperProps={{
+            sx: {
+              "& .MuiTooltip-tooltip": {
+                bgcolor: "background.paper",
+              },
+              "& .MuiTooltip-arrow": {
+                bgcolor: "transparent",
+                color: "black",
+              },
+              "& .MuiTooltip-tooltip li": {
+                padding: 0,
+              },
+            },
+          }}
+          title={
+            <Box>
+              <List component="nav" aria-label="secondary mailbox folder">
+                <ListItem>
+                  <ListItemButton
+                    autoFocus
+                    sx={{
+                      height: "0px",
+                      width: "0px",
+                      position: "absolute",
+                      pointerEvents: "none",
+                      opacity: "0",
+                    }}
+                  />
+                  <ListItemButton onClick={() => copy(source)}>
+                    <ListItemIcon>
+                      <ContentCopy />
+                    </ListItemIcon>
+                    <ListItemText primary="Copy file" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton onClick={() => copy(sources)}>
+                    <ListItemIcon>
+                      <CopyAll />
+                    </ListItemIcon>
+                    <ListItemText primary="Copy flattened files" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <OpenInNew />
+                    </ListItemIcon>
+                    <ListItemText primary="View in explorer" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <Download />
+                    </ListItemIcon>
+                    <ListItemText primary="Download all files" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <Download />
+                    </ListItemIcon>
+                    <ListItemText primary="Download flattened files" />
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Box>
+          }
+        >
+          <FileMore>
+            <IconButton size="small" edge="end">
+              <MoreHoriz sx={{ fontSize: 24 }} />
+            </IconButton>
+          </FileMore>
+        </Tooltip>
+      </MoreWrap>
+    )}
+  </AddressWrap>
+);
+
 export default ({
   oldCode,
   newCode,
@@ -136,8 +256,9 @@ export default ({
     setCollapsed(collapsed === "true" ? "false" : "true");
   };
 
+  const selectedFile = useSelectSelectedFile();
   return (
-    <Wrapper id={fileName}>
+    <Wrapper id={fileName} selected={fileName === selectedFile}>
       <SourceHeader>
         <div>
           <Tooltip
@@ -180,101 +301,17 @@ export default ({
               />
             </IconButton>
           </Tooltip>
-          <TitleWrapper>{fileName}</TitleWrapper>
+          <TitleWrapper title={fileName}>{fileName}</TitleWrapper>
         </div>
       </SourceHeader>
-      <FileHeader>
-        <FileInfos splitview={splitView.toString()}>
-          <FileInfo>
-            <OverflowHidden>{address1}</OverflowHidden>
-          </FileInfo>
-          <FileInfo>
-            <OverflowHidden>{address2}</OverflowHidden>
-            {/* <Tooltip
-              arrow
-              PopperProps={{
-                sx: {
-                  "& .MuiTooltip-tooltip": {
-                    bgcolor: "background.paper",
-                  },
-                  "& .MuiTooltip-arrow": {
-                    bgcolor: "transparent",
-                    color: "black",
-                  },
-                  "& .MuiTooltip-tooltip li": {
-                    padding: 0,
-                  },
-                },
-              }}
-              title={
-                <Box>
-                  <List component="nav" aria-label="secondary mailbox folder">
-                    <ListItem>
-                      <ListItemButton>
-                        <ListItemIcon>
-                          <ContentCopy />
-                        </ListItemIcon>
-                        <ListItemText primary="Copy file" />
-                      </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemButton>
-                        <ListItemIcon>
-                          <CopyAll />
-                        </ListItemIcon>
-                        <ListItemText primary="Copy flattened files" />
-                      </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemButton>
-                        <ListItemIcon>
-                          <OpenInNew />
-                        </ListItemIcon>
-                        <ListItemText primary="View in explorer" />
-                      </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemButton>
-                        <ListItemIcon>
-                          <Code />
-                        </ListItemIcon>
-                        <ListItemText primary="Open in remix" />
-                      </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemButton>
-                        <ListItemIcon>
-                          <Download />
-                        </ListItemIcon>
-                        <ListItemText primary="Download all files" />
-                      </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemButton>
-                        <ListItemIcon>
-                          <Download />
-                        </ListItemIcon>
-                        <ListItemText primary="Download flattened files" />
-                      </ListItemButton>
-                    </ListItem>
-                  </List>
-                </Box>
-              }
-            >
-              <FileMore>
-                <IconButton size="small" edge="end">
-                  <MoreHoriz sx={{ fontSize: 24 }} />
-                </IconButton>
-              </FileMore>
-            </Tooltip> */}
-          </FileInfo>
-        </FileInfos>
-      </FileHeader>
+
       <HideIfCollapsed collapsed={collapsed}>
         <ReactDiffViewer
           oldValue={oldCode}
           newValue={newCode}
           splitView={splitView}
+          leftTitle={renderAddress(address1, 1, oldCode)}
+          rightTitle={renderAddress(address2, 2, newCode)}
           showDiffOnly={!expandAll}
           useDarkTheme={true}
           renderContent={highlightSyntax}

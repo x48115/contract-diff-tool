@@ -10,8 +10,8 @@ import {
   useSelectNetwork1,
   useSelectNetwork2,
   useSelectChains,
-  useSelectExplorer1,
-  useSelectExplorer2,
+  useSelectChain1,
+  useSelectChain2,
 } from "../hooks";
 
 import {
@@ -125,10 +125,20 @@ function App() {
   const [removedText, setRemovedText] = useState("");
   const [changedText, setChangedText] = useState("2 changed files");
 
+  const [fileDiffCounts, setFileDiffCounts] = useState({});
+
+  const [helperTextOverride1, setHelperTextOverride1] = useState(null);
+  const [helperTextOverride2, setHelperTextOverride2] = useState(null);
+  const [errorOverride1, setErrorOverride1] = useState(null);
+  const [errorOverride2, setErrorOverride2] = useState(null);
+
   const [contracts, setContracts] = useState([]);
   const [filteredContracts, setFilteredContracts] = useState(contracts);
   const [code1, setCode1] = useState([]);
   const [code2, setCode2] = useState([]);
+
+  const [timeoutLeft, setTimeoutLeft] = useState();
+  const [timeoutRight, setTimeoutRight] = useState();
 
   const [address1State, setAddress1State] = useState({
     valid: false,
@@ -147,8 +157,8 @@ function App() {
   const network1 = useSelectNetwork1();
   const network2 = useSelectNetwork2();
   const chains = useSelectChains();
-  const explorer1 = useSelectExplorer1();
-  const explorer2 = useSelectExplorer2();
+  const chain1 = useSelectChain1();
+  const chain2 = useSelectChain2();
 
   const hasAddresses = address1State.value !== "" && address2State.value !== "";
   const hasChains = Object.keys(chains).length;
@@ -156,8 +166,47 @@ function App() {
   const address1Changed = address1State.value !== previousAddress1;
   const address2Changed = address2State.value !== previousAddress2;
 
+  const handleScroll = () => {
+    if (filteredContracts && !filteredContracts.length) {
+      return;
+    }
+    const summaryBar = document.getElementById("summary-bar");
+    const filelist = document.getElementById("filelist");
+    const summaryBarRect = summaryBar.getBoundingClientRect();
+    filelist.setAttribute(
+      "style",
+      `height: calc(100vh - 79px - 61px - ${summaryBarRect.top}px`
+    );
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    handleScroll();
+  });
+
+  // Initial network state
+  useEffect(() => {
+    if (!previousNetwork1 && network1) {
+      setPreviousNetwork1(network1);
+    }
+    if (!previousNetwork2 && network2) {
+      setPreviousNetwork2(network2);
+    }
+  }, [network1, network2]);
+
   // Merge sources
   useEffect(() => {
+    if (!(code1 && code1.length && code2 && code2.length)) {
+      return;
+    }
+
     const code1Mapped = code1.map((code) => ({
       name: code.name,
       source1: code.source,
@@ -178,11 +227,10 @@ function App() {
     );
     const merged = Object.values(mergeDeep(aKeyed, bKeyed));
 
-    const mergedAndUnique = merged.filter(
-      (contracts) =>
-        contracts.source1 !== contracts.source2 &&
-        contracts.source1 &&
-        contracts.source2
+    const mergedAndUnique = merged.filter((contracts) =>
+      contracts.source1 && contracts.source2
+        ? contracts.source1 !== contracts.source2
+        : contracts
     );
 
     setContracts(mergedAndUnique);
@@ -192,19 +240,47 @@ function App() {
     return new Promise((resolve) => setTimeout(resolve, time));
   };
 
+  const clearAddressHelper1 = () => {
+    setHelperTextOverride1("");
+    setErrorOverride1(false);
+  };
+
+  const clearAddressHelper2 = () => {
+    setHelperTextOverride2("");
+    setErrorOverride2(false);
+  };
+
+  const setHelperTextOverride1Fn = (msg) => {
+    setHelperTextOverride1(msg);
+    clearTimeout(timeoutLeft);
+  };
+
+  const setHelperTextOverride2Fn = (msg) => {
+    setHelperTextOverride2(msg);
+    clearTimeout(timeoutRight);
+  };
+
   const getSourceCode = async (field, address) => {
-    let explorer;
+    let explorerApi;
+
+    let apiKey;
     if (field === 1) {
-      explorer = explorer1;
+      apiKey = chain1.apiKey;
+      setErrorOverride1(false);
+      setHelperTextOverride1Fn("Loading...");
+      explorerApi = chain1.explorerApiUrl;
     } else {
-      explorer = explorer2;
+      apiKey = chain2.apiKey;
+      setErrorOverride2(false);
+      setHelperTextOverride2Fn("Loading...");
+      explorerApi = chain2.explorerApiUrl;
     }
-    const url = `https://api.${
-      new URL(explorer).hostname
-    }/api?module=contract&action=getsourcecode&address=${address}`;
-    console.log("get", field, address, url);
+    const api = apiKey ? `&apiKey=${apiKey}` : "";
+
+    const url = `${explorerApi}/api?module=contract&action=getsourcecode&address=${address}${api}`;
+
     let data = await fetch(url).then((res) => res.json());
-    console.log("raw resp", data);
+    // console.log("raw resp", data);
     const notOk = data.status === "0";
     if (notOk) {
       await delay(1000);
@@ -212,14 +288,63 @@ function App() {
       getSourceCode(field, address);
       return;
     }
+    const notVerified = "Source not verified";
     if (data.result[0].SourceCode === "") {
-      console.log("not verified");
+      if (field === 1) {
+        console.log("not verified");
+        setErrorOverride1(true);
+        setHelperTextOverride1Fn(notVerified);
+      } else {
+        setErrorOverride2(true);
+        setHelperTextOverride2Fn(notVerified);
+      }
       return;
     }
-    const dataz = JSON.parse(data.result[0].SourceCode.slice(1, -1)).sources;
+    if (!(data.result && data.result[0] && data.result[0].SourceCode)) {
+      if (field === 1) {
+        setErrorOverride1(true);
+        setHelperTextOverride1Fn(notVerified);
+      } else {
+        setErrorOverride2(true);
+        setHelperTextOverride2Fn(notVerified);
+      }
+      return;
+    }
+
+    if (field === 1) {
+      setErrorOverride1(false);
+      setHelperTextOverride1("Successfully loaded contract");
+      setTimeoutLeft(
+        setTimeout(() => {
+          setHelperTextOverride1(null);
+        }, 3000)
+      );
+    } else {
+      setErrorOverride2(false);
+      setHelperTextOverride2("Successfully loaded contract");
+      setTimeoutRight(
+        setTimeout(() => {
+          setHelperTextOverride2(null);
+        }, 3000)
+      );
+    }
+
+    let contractData = {};
+    try {
+      contractData = JSON.parse(data.result[0].SourceCode.slice(1, -1)).sources;
+    } catch (e) {
+      const firstResult = data.result[0];
+      if (typeof firstResult.SourceCode === "string") {
+        contractData[firstResult.ContractName] = {
+          content: firstResult.SourceCode,
+        };
+      } else {
+        contractData = JSON.parse(data.result[0].SourceCode);
+      }
+    }
 
     const sources = [];
-    for (const [name, sourceObj] of Object.entries(dataz)) {
+    for (const [name, sourceObj] of Object.entries(contractData)) {
       const source = sourceObj.content;
       sources.push({ name, source, address });
     }
@@ -251,8 +376,8 @@ function App() {
           setPreviousNetwork1(network1);
         }
         if (network2 !== previousNetwork2) {
-          getSourceCode(2, address1State.value);
-          setPreviousNetwork1(network1);
+          getSourceCode(2, address2State.value);
+          setPreviousNetwork2(network2);
         }
       }
       if (address1State.value && address2State.value)
@@ -275,6 +400,31 @@ function App() {
     const removed = document.querySelectorAll(
       "[class*='gutter'][class*='diff-removed']"
     ).length;
+
+    let addedRemoved = {};
+    filteredContracts.forEach(({ name, source1, source2 }) => {
+      const removedForFile = document
+        .getElementById(name)
+        .querySelectorAll("[class*='gutter'][class*='diff-removed']").length;
+      const addedForFile = document
+        .getElementById(name)
+        .querySelectorAll("[class*='gutter'][class*='diff-added']").length;
+      let modificationType;
+      if (source1 && !source2) {
+        modificationType = "removed";
+      } else if (!source1 && source2) {
+        modificationType = "added";
+      } else if (source1 !== source2) {
+        modificationType = "modified";
+      }
+      addedRemoved[name] = {
+        added: addedForFile,
+        removed: removedForFile,
+        modificationType,
+      };
+    });
+    setFileDiffCounts(addedRemoved);
+
     const changed = filteredContracts.length;
     const addedSuffix = added === 0 || added > 1 ? "s" : "";
     const removedSuffix = removed === 0 || removed > 1 ? "s" : "";
@@ -352,6 +502,9 @@ function App() {
             addressState={address1State}
             setAddressState={setAddress1State}
             field={1}
+            helperTextOverride={helperTextOverride1}
+            errorOverride={errorOverride1}
+            clearAddressHelper={clearAddressHelper1}
           />
           <ChainSelector field={1} />
         </Contract>
@@ -361,6 +514,9 @@ function App() {
             addressState={address2State}
             setAddressState={setAddress2State}
             field={2}
+            helperTextOverride={helperTextOverride2}
+            errorOverride={errorOverride2}
+            clearAddressHelper={clearAddressHelper2}
           />
           <ChainSelector field={2} />
         </Contract>
@@ -369,7 +525,7 @@ function App() {
         <HaventStartedText>Enter contract addresses above</HaventStartedText>
       </HaventStarted>
       <Results hide={!hasResults ? "true" : "false"}>
-        <Summary>
+        <Summary id="summary-bar">
           <CollapseAndText>
             {Collapse}
             <LineChanges>
@@ -399,6 +555,7 @@ function App() {
             </ToggleButton>
           </ToggleButtonGroup>
         </Summary>
+
         <Layout hidefiles={hidefiles}>
           <FileList
             hidefiles={hidefiles}
@@ -406,6 +563,7 @@ function App() {
             filteredContracts={filteredContracts}
             setFilteredContracts={setFilteredContracts}
             setHideFiles={setHideFiles}
+            fileDiffCounts={fileDiffCounts}
           />
           <div>{diffs}</div>
         </Layout>

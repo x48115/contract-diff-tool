@@ -1,0 +1,1126 @@
+[
+  {
+    "chainId": 1,
+    "url": "https://api.etherscan.io"
+  },
+  {
+    "chainId": 7,
+    "url": "https://exp.thaichain.org"
+  },
+  {
+    "chainId": 10,
+    "url": "https://api-optimistic.etherscan.io"
+  },
+  {
+    "chainId": 14,
+    "url": "https://flare-explorer.flare.network"
+  },
+  {
+    "chainId": 16,
+    "url": "https://coston-explorer.flare.network"
+  },
+  {
+    "chainId": 18,
+    "url": "https://explorer-testnet.thundercore.com"
+  },
+  {
+    "chainId": 19,
+    "url": "https://songbird-explorer.flare.network"
+  },
+  {
+    "chainId": 20,
+    "url": "https://esc.elastos.io"
+  },
+  {
+    "chainId": 21,
+    "url": "https://esc-testnet.elastos.io"
+  },
+  {
+    "chainId": 25,
+    "url": "https://api.cronoscan.com"
+  },
+  {
+    "chainId": 39,
+    "url": "https://testnet.uniultra.xyz"
+  },
+  {
+    "chainId": 47,
+    "url": "https://explorer.acria.ai"
+  },
+  {
+    "chainId": 48,
+    "url": "https://etmscan.network"
+  },
+  {
+    "chainId": 49,
+    "url": "https://pioneer.etmscan.network"
+  },
+  {
+    "chainId": 55,
+    "url": "https://zyxscan.com"
+  },
+  {
+    "chainId": 56,
+    "url": "https://api.bscscan.com"
+  },
+  {
+    "chainId": 57,
+    "url": "https://explorer.syscoin.org"
+  },
+  {
+    "chainId": 61,
+    "url": "https://blockscout.com/etc/mainnet"
+  },
+  {
+    "chainId": 74,
+    "url": "https://explorer.idchain.one"
+  },
+  {
+    "chainId": 77,
+    "url": "https://blockscout.com/poa/sokol"
+  },
+  {
+    "chainId": 79,
+    "url": "https://scan.zenithchain.co"
+  },
+  {
+    "chainId": 84,
+    "url": "https://explorer.linqto-dev.com"
+  },
+  {
+    "chainId": 99,
+    "url": "https://blockscout.com/poa/core"
+  },
+  {
+    "chainId": 100,
+    "url": "https://blockscout.com/xdai/mainnet"
+  },
+  {
+    "chainId": 106,
+    "url": "https://evmexplorer.velas.com"
+  },
+  {
+    "chainId": 112,
+    "url": "https://coinbit-explorer.chain.sbcrypto.app"
+  },
+  {
+    "chainId": 113,
+    "url": "https://explorer.dehvo.com"
+  },
+  {
+    "chainId": 114,
+    "url": "https://coston2-explorer.flare.network"
+  },
+  {
+    "chainId": 117,
+    "url": "https://evm-explorer.uptick.network"
+  },
+  {
+    "chainId": 119,
+    "url": "https://evmscan.nuls.io"
+  },
+  {
+    "chainId": 120,
+    "url": "https://beta.evmscan.nuls.io"
+  },
+  {
+    "chainId": 134,
+    "url": "https://blockscout.bellecour.iex.ec"
+  },
+  {
+    "chainId": 137,
+    "url": "https://api.polygonscan.com"
+  },
+  {
+    "chainId": 139,
+    "url": "https://explorer.wikiwoop.com"
+  },
+  {
+    "chainId": 144,
+    "url": "https://phiscan.com"
+  },
+  {
+    "chainId": 155,
+    "url": "https://testnet.tenetscan.io"
+  },
+  {
+    "chainId": 161,
+    "url": "https://testnet.evascan.io"
+  },
+  {
+    "chainId": 186,
+    "url": "https://seeleview.net"
+  },
+  {
+    "chainId": 230,
+    "url": "https://evm.swapdex.network"
+  },
+  {
+    "chainId": 246,
+    "url": "https://explorer.energyweb.org"
+  },
+  {
+    "chainId": 250,
+    "url": "https://api.ftmscan.com"
+  },
+  {
+    "chainId": 274,
+    "url": "https://explorer.lachain.network"
+  },
+  {
+    "chainId": 288,
+    "url": "https://api.bobascan.com"
+  },
+  {
+    "chainId": 301,
+    "url": "https://blockexplorer.bobaopera.boba.network"
+  },
+  {
+    "chainId": 322,
+    "url": "https://scan-testnet.kcc.network"
+  },
+  {
+    "chainId": 416,
+    "url": "https://explorer.sx.technology"
+  },
+  {
+    "chainId": 418,
+    "url": "https://testexplorer.lachain.network"
+  },
+  {
+    "chainId": 444,
+    "url": "https://testnet.frenscan.io"
+  },
+  {
+    "chainId": 534,
+    "url": "https://candleexplorer.com"
+  },
+  {
+    "chainId": 555,
+    "url": "https://exp.velaverse.io"
+  },
+  {
+    "chainId": 599,
+    "url": "https://goerli.explorer.metisdevops.link"
+  },
+  {
+    "chainId": 647,
+    "url": "https://explorer.toronto.sx.technology"
+  },
+  {
+    "chainId": 740,
+    "url": "https://testnet-explorer.canto.neobase.one"
+  },
+  {
+    "chainId": 741,
+    "url": "https://testnet.ventionscan.io"
+  },
+  {
+    "chainId": 1000,
+    "url": "https://explorer.gton.network"
+  },
+  {
+    "chainId": 1004,
+    "url": "https://test.ektascan.io"
+  },
+  {
+    "chainId": 1071,
+    "url": "https://explorer.evm.testnet.shimmer.network"
+  },
+  {
+    "chainId": 1088,
+    "url": "https://andromeda-explorer.metis.io"
+  },
+  {
+    "chainId": 1101,
+    "url": "https://api-zkevm.polygonscan.com"
+  },
+  {
+    "chainId": 1117,
+    "url": "https://explorer.dogcoin.network"
+  },
+  {
+    "chainId": 1138,
+    "url": "https://testnet.amstarscan.com"
+  },
+  {
+    "chainId": 1149,
+    "url": "https://explorer.plexfinance.us"
+  },
+  {
+    "chainId": 1234,
+    "url": "https://stepscan.io"
+  },
+  {
+    "chainId": 1243,
+    "url": "https://app.archiescan.io"
+  },
+  {
+    "chainId": 1244,
+    "url": "https://testnet.archiescan.io"
+  },
+  {
+    "chainId": 1246,
+    "url": "https://omscan.omplatform.com"
+  },
+  {
+    "chainId": 1280,
+    "url": "https://browser.halo.land"
+  },
+  {
+    "chainId": 1284,
+    "url": "https://api-moonbeam.moonscan.io"
+  },
+  {
+    "chainId": 1285,
+    "url": "https://api-moonriver.moonscan.io"
+  },
+  {
+    "chainId": 1294,
+    "url": "https://blockexplorer.bobabeam.boba.network"
+  },
+  {
+    "chainId": 1297,
+    "url": "https://blockexplorer.bobabase.boba.network"
+  },
+  {
+    "chainId": 1311,
+    "url": "https://test.doscan.io"
+  },
+  {
+    "chainId": 1314,
+    "url": "https://www.alyxscan.com"
+  },
+  {
+    "chainId": 1319,
+    "url": "https://aitd-explorer-new.aitd.io"
+  },
+  {
+    "chainId": 1388,
+    "url": "https://mainnet.amstarscan.com"
+  },
+  {
+    "chainId": 1402,
+    "url": "https://explorer.public.zkevm-test.net"
+  },
+  {
+    "chainId": 1422,
+    "url": "https://explorer.public.zkevm-test.net"
+  },
+  {
+    "chainId": 1433,
+    "url": "https://rikscan.com"
+  },
+  {
+    "chainId": 1442,
+    "url": "https://explorer.public.zkevm-test.net"
+  },
+  {
+    "chainId": 1452,
+    "url": "https://explorer.giltestnet.com"
+  },
+  {
+    "chainId": 1455,
+    "url": "https://ctexscan.com"
+  },
+  {
+    "chainId": 1559,
+    "url": "https://tenetscan.io"
+  },
+  {
+    "chainId": 1662,
+    "url": "https://yuma-explorer.horizen.io"
+  },
+  {
+    "chainId": 1663,
+    "url": "https://gobi-explorer.horizen.io"
+  },
+  {
+    "chainId": 1777,
+    "url": "https://explorer.gaussgang.com"
+  },
+  {
+    "chainId": 1881,
+    "url": "https://scan.cartenz.works"
+  },
+  {
+    "chainId": 1890,
+    "url": "https://phoenix.lightlink.io"
+  },
+  {
+    "chainId": 1891,
+    "url": "https://pegasus.lightlink.io"
+  },
+  {
+    "chainId": 1908,
+    "url": "https://testnet.bitciexplorer.com"
+  },
+  {
+    "chainId": 1945,
+    "url": "https://explorer-testnet.onuschain.io"
+  },
+  {
+    "chainId": 1969,
+    "url": "https://testnetscan.superexchain.com"
+  },
+  {
+    "chainId": 1970,
+    "url": "https://scan.superexchain.com"
+  },
+  {
+    "chainId": 1975,
+    "url": "https://explorer.onuschain.io"
+  },
+  {
+    "chainId": 1994,
+    "url": "https://ektascan.io"
+  },
+  {
+    "chainId": 1995,
+    "url": "https://explorer.testnet.edexa.com"
+  },
+  {
+    "chainId": 2000,
+    "url": "https://explorer.dogechain.dog"
+  },
+  {
+    "chainId": 2001,
+    "url": "https://explorer-mainnet-cardano-evm.c1.milkomeda.com"
+  },
+  {
+    "chainId": 2002,
+    "url": "https://explorer-mainnet-algorand-rollup.a1.milkomeda.com"
+  },
+  {
+    "chainId": 2008,
+    "url": "https://explorer.testnet.cloudwalk.io"
+  },
+  {
+    "chainId": 2009,
+    "url": "https://explorer.mainnet.cloudwalk.io"
+  },
+  {
+    "chainId": 2016,
+    "url": "https://explorer.mainnetz.io"
+  },
+  {
+    "chainId": 2018,
+    "url": "https://explorer.dev.publicmint.io"
+  },
+  {
+    "chainId": 2019,
+    "url": "https://explorer.tst.publicmint.io"
+  },
+  {
+    "chainId": 2020,
+    "url": "https://explorer.publicmint.io"
+  },
+  {
+    "chainId": 2021,
+    "url": "https://edgscan.live"
+  },
+  {
+    "chainId": 2047,
+    "url": "https://web3-testnet-explorer.thestratos.org"
+  },
+  {
+    "chainId": 2077,
+    "url": "https://explorer.qkacoin.org"
+  },
+  {
+    "chainId": 2109,
+    "url": "https://explorer.exosama.com"
+  },
+  {
+    "chainId": 2122,
+    "url": "https://scan.metaplayer.one"
+  },
+  {
+    "chainId": 2124,
+    "url": "https://dubai.mp1scan.io"
+  },
+  {
+    "chainId": 2151,
+    "url": "https://boascan.io"
+  },
+  {
+    "chainId": 2152,
+    "url": "https://evm.findorascan.io"
+  },
+  {
+    "chainId": 2153,
+    "url": "https://testnet-anvil.evm.findorascan.io"
+  },
+  {
+    "chainId": 2203,
+    "url": "https://explorer.bitcoinevm.com"
+  },
+  {
+    "chainId": 2213,
+    "url": "https://explorer.evanesco.org"
+  },
+  {
+    "chainId": 2221,
+    "url": "https://explorer.testnet.kava.io"
+  },
+  {
+    "chainId": 2222,
+    "url": "https://explorer.kava.io"
+  },
+  {
+    "chainId": 2300,
+    "url": "https://bombscan.com"
+  },
+  {
+    "chainId": 2357,
+    "url": "https://blockscout.sepolia.kroma.network"
+  },
+  {
+    "chainId": 2399,
+    "url": "https://explorer.bombchain-testnet.ankr.com"
+  },
+  {
+    "chainId": 2400,
+    "url": "https://explorer.tcgverse.xyz"
+  },
+  {
+    "chainId": 2569,
+    "url": "https://tpcscan.com"
+  },
+  {
+    "chainId": 2611,
+    "url": "https://redlightscan.finance"
+  },
+  {
+    "chainId": 2888,
+    "url": "https://testnet.bobascan.com"
+  },
+  {
+    "chainId": 3068,
+    "url": "https://explorer.mainnet.thebifrost.io"
+  },
+  {
+    "chainId": 3306,
+    "url": "https://explorer.debounce.network"
+  },
+  {
+    "chainId": 3333,
+    "url": "https://explorer.testnet.web3q.io"
+  },
+  {
+    "chainId": 3334,
+    "url": "https://explorer.galileo.web3q.io"
+  },
+  {
+    "chainId": 3400,
+    "url": "https://explorer.paribu.network"
+  },
+  {
+    "chainId": 3500,
+    "url": "https://testnet.paribuscan.com"
+  },
+  {
+    "chainId": 3501,
+    "url": "https://exp.jfinchain.com"
+  },
+  {
+    "chainId": 3693,
+    "url": "https://explorer.empirenetwork.io"
+  },
+  {
+    "chainId": 3737,
+    "url": "https://scan.crossbell.io"
+  },
+  {
+    "chainId": 3797,
+    "url": "https://alveyscan.com"
+  },
+  {
+    "chainId": 3939,
+    "url": "https://test.doscan.io"
+  },
+  {
+    "chainId": 4051,
+    "url": "https://blockexplorer.testnet.bobaopera.boba.network"
+  },
+  {
+    "chainId": 4062,
+    "url": "https://explorer.testnet.n3.nahmii.io"
+  },
+  {
+    "chainId": 4090,
+    "url": "https://oasis.ftnscan.com"
+  },
+  {
+    "chainId": 4096,
+    "url": "https://testnet.bitindiscan.com"
+  },
+  {
+    "chainId": 4099,
+    "url": "https://bitindiscan.com"
+  },
+  {
+    "chainId": 4141,
+    "url": "https://testnet.tipboxcoin.net"
+  },
+  {
+    "chainId": 4328,
+    "url": "https://blockexplorer.testnet.avax.boba.network"
+  },
+  {
+    "chainId": 4777,
+    "url": "https://testnet-explorer.blackfort.network"
+  },
+  {
+    "chainId": 4918,
+    "url": "https://evm-testnet.venidiumexplorer.com"
+  },
+  {
+    "chainId": 4919,
+    "url": "https://evm.venidiumexplorer.com"
+  },
+  {
+    "chainId": 4999,
+    "url": "https://explorer.blackfort.network"
+  },
+  {
+    "chainId": 5001,
+    "url": "https://explorer.testnet.mantle.xyz"
+  },
+  {
+    "chainId": 5551,
+    "url": "https://explorer.nahmii.io"
+  },
+  {
+    "chainId": 5555,
+    "url": "https://explorer.chainverse.info"
+  },
+  {
+    "chainId": 5700,
+    "url": "https://tanenbaum.io"
+  },
+  {
+    "chainId": 5729,
+    "url": "https://scan-testnet.hika.network"
+  },
+  {
+    "chainId": 5758,
+    "url": "https://satoshiscan.io"
+  },
+  {
+    "chainId": 6065,
+    "url": "https://explorer-test.tresleches.finance"
+  },
+  {
+    "chainId": 6066,
+    "url": "https://explorer.tresleches.finance"
+  },
+  {
+    "chainId": 6552,
+    "url": "https://testnet-explorer.scolcoin.com"
+  },
+  {
+    "chainId": 6626,
+    "url": "https://scan.chain.pixie.xyz"
+  },
+  {
+    "chainId": 6969,
+    "url": "https://tombscout.com"
+  },
+  {
+    "chainId": 7070,
+    "url": "https://evm.planq.network"
+  },
+  {
+    "chainId": 7575,
+    "url": "https://testnet.adilchain-scan.io"
+  },
+  {
+    "chainId": 7576,
+    "url": "https://adilchain-scan.io"
+  },
+  {
+    "chainId": 7700,
+    "url": "https://tuber.build"
+  },
+  {
+    "chainId": 7701,
+    "url": "https://testnet.tuber.build"
+  },
+  {
+    "chainId": 7979,
+    "url": "https://doscan.io"
+  },
+  {
+    "chainId": 8738,
+    "url": "https://explorer.alph.network"
+  },
+  {
+    "chainId": 8888,
+    "url": "https://xanachain.xana.net"
+  },
+  {
+    "chainId": 8898,
+    "url": "https://mmtscan.io"
+  },
+  {
+    "chainId": 8899,
+    "url": "https://exp-l1.jibchain.net"
+  },
+  {
+    "chainId": 8989,
+    "url": "https://scan.gmmtchain.io"
+  },
+  {
+    "chainId": 9000,
+    "url": "https://evm.evmos.dev"
+  },
+  {
+    "chainId": 9339,
+    "url": "https://testnet.dogcoin.network"
+  },
+  {
+    "chainId": 9728,
+    "url": "https://blockexplorer.testnet.bnb.boba.network"
+  },
+  {
+    "chainId": 9768,
+    "url": "https://testnet.mainnetz.io"
+  },
+  {
+    "chainId": 9997,
+    "url": "https://testnet-rollup-explorer.altlayer.io"
+  },
+  {
+    "chainId": 10024,
+    "url": "https://gonscan.com"
+  },
+  {
+    "chainId": 10200,
+    "url": "https://blockscout.chiadochain.net"
+  },
+  {
+    "chainId": 10946,
+    "url": "https://explorer.quadrans.io"
+  },
+  {
+    "chainId": 10947,
+    "url": "https://explorer.testnet.quadrans.io"
+  },
+  {
+    "chainId": 11119,
+    "url": "https://explorer.hashbit.org"
+  },
+  {
+    "chainId": 11235,
+    "url": "https://explorer.haqq.network"
+  },
+  {
+    "chainId": 11437,
+    "url": "https://bx.testnet.shyft.network"
+  },
+  {
+    "chainId": 11612,
+    "url": "https://testnet.sardisnetwork.com"
+  },
+  {
+    "chainId": 12345,
+    "url": "https://testnet.stepscan.io"
+  },
+  {
+    "chainId": 12715,
+    "url": "https://testnet.rikscan.com"
+  },
+  {
+    "chainId": 13381,
+    "url": "https://phoenixplorer.com"
+  },
+  {
+    "chainId": 15557,
+    "url": "https://explorer.testnet.evm.eosnetwork.com"
+  },
+  {
+    "chainId": 16888,
+    "url": "https://testnet.ivarscan.com"
+  },
+  {
+    "chainId": 18159,
+    "url": "https://memescan.io"
+  },
+  {
+    "chainId": 19011,
+    "url": "https://explorer.oasys.homeverse.games"
+  },
+  {
+    "chainId": 19845,
+    "url": "https://btcixscan.com"
+  },
+  {
+    "chainId": 20001,
+    "url": "https://scan.camelark.com"
+  },
+  {
+    "chainId": 20736,
+    "url": "https://explorer.p12.games"
+  },
+  {
+    "chainId": 21816,
+    "url": "https://explorer.omchain.io"
+  },
+  {
+    "chainId": 22023,
+    "url": "https://taycan-evmscan.hupayx.io"
+  },
+  {
+    "chainId": 23118,
+    "url": "https://opside.info"
+  },
+  {
+    "chainId": 23294,
+    "url": "https://explorer.sapphire.oasis.io"
+  },
+  {
+    "chainId": 23295,
+    "url": "https://testnet.explorer.sapphire.oasis.dev"
+  },
+  {
+    "chainId": 25888,
+    "url": "https://www.hammerchain.io"
+  },
+  {
+    "chainId": 25925,
+    "url": "https://testnet.bkcscan.com"
+  },
+  {
+    "chainId": 26863,
+    "url": "https://scan.oasischain.io"
+  },
+  {
+    "chainId": 31223,
+    "url": "https://scan.cloudtx.finance"
+  },
+  {
+    "chainId": 31224,
+    "url": "https://explorer.cloudtx.finance"
+  },
+  {
+    "chainId": 33333,
+    "url": "https://avescan.io"
+  },
+  {
+    "chainId": 35011,
+    "url": "https://exp.j2o.io"
+  },
+  {
+    "chainId": 35441,
+    "url": "https://explorer.q.org"
+  },
+  {
+    "chainId": 35443,
+    "url": "https://explorer.qtestnet.org"
+  },
+  {
+    "chainId": 39815,
+    "url": "https://ohoscan.com"
+  },
+  {
+    "chainId": 42161,
+    "url": "https://api.arbiscan.io"
+  },
+  {
+    "chainId": 42220,
+    "url": "https://explorer.celo.org/mainnet"
+  },
+  {
+    "chainId": 42261,
+    "url": "https://testnet.explorer.emerald.oasis.dev"
+  },
+  {
+    "chainId": 42262,
+    "url": "https://explorer.emerald.oasis.dev"
+  },
+  {
+    "chainId": 43114,
+    "url": "https://api.snowtrace.io"
+  },
+  {
+    "chainId": 43288,
+    "url": "https://blockexplorer.avax.boba.network"
+  },
+  {
+    "chainId": 44444,
+    "url": "https://frenscan.io"
+  },
+  {
+    "chainId": 44787,
+    "url": "https://api.celoscan.io"
+  },
+  {
+    "chainId": 45000,
+    "url": "https://explorer.autobahn.network"
+  },
+  {
+    "chainId": 47805,
+    "url": "https://scan.rei.network"
+  },
+  {
+    "chainId": 49049,
+    "url": "https://floripa-explorer.wireshape.org"
+  },
+  {
+    "chainId": 49088,
+    "url": "https://explorer.testnet.thebifrost.io"
+  },
+  {
+    "chainId": 50021,
+    "url": "https://explorer.testnet.gton.network"
+  },
+  {
+    "chainId": 51712,
+    "url": "https://contract-mainnet.sardisnetwork.com"
+  },
+  {
+    "chainId": 54211,
+    "url": "https://explorer.testedge2.haqq.network"
+  },
+  {
+    "chainId": 55555,
+    "url": "https://reiscan.com"
+  },
+  {
+    "chainId": 55556,
+    "url": "https://testnet.reiscan.com"
+  },
+  {
+    "chainId": 57000,
+    "url": "https://rollux.tanenbaum.io"
+  },
+  {
+    "chainId": 59140,
+    "url": "https://explorer.goerli.linea.build"
+  },
+  {
+    "chainId": 63000,
+    "url": "https://explorer.ecredits.com"
+  },
+  {
+    "chainId": 63001,
+    "url": "https://explorer.tst.ecredits.com"
+  },
+  {
+    "chainId": 65450,
+    "url": "https://explorer.scolcoin.com"
+  },
+  {
+    "chainId": 73927,
+    "url": "https://scan.mvm.dev"
+  },
+  {
+    "chainId": 77612,
+    "url": "https://ventionscan.io"
+  },
+  {
+    "chainId": 84531,
+    "url": "https://base-goerli.blockscout.com"
+  },
+  {
+    "chainId": 88880,
+    "url": "https://scoville-explorer.chiliz.com"
+  },
+  {
+    "chainId": 88888,
+    "url": "https://ivarscan.com"
+  },
+  {
+    "chainId": 92001,
+    "url": "https://explorer.lambda.top"
+  },
+  {
+    "chainId": 101010,
+    "url": "https://testnet.soverun.com"
+  },
+  {
+    "chainId": 108801,
+    "url": "https://explorer.brochain.org"
+  },
+  {
+    "chainId": 111111,
+    "url": "https://explorer.main.siberium.net.ru"
+  },
+  {
+    "chainId": 123456,
+    "url": "https://devnet.adilchain-scan.io"
+  },
+  {
+    "chainId": 200101,
+    "url": "https://explorer-devnet-cardano-evm.c1.milkomeda.com"
+  },
+  {
+    "chainId": 200202,
+    "url": "https://explorer-devnet-algorand-rollup.a1.milkomeda.com"
+  },
+  {
+    "chainId": 202624,
+    "url": "https://jellie.twala.io"
+  },
+  {
+    "chainId": 224168,
+    "url": "https://ecoscan.tafchain.com"
+  },
+  {
+    "chainId": 247253,
+    "url": "https://explorer-testnet.saakuru.network"
+  },
+  {
+    "chainId": 330844,
+    "url": "https://tscscan.com"
+  },
+  {
+    "chainId": 373737,
+    "url": "https://blockscout-test.hap.land"
+  },
+  {
+    "chainId": 381931,
+    "url": "https://metalscan.io"
+  },
+  {
+    "chainId": 381932,
+    "url": "https://tahoe.metalscan.io"
+  },
+  {
+    "chainId": 404040,
+    "url": "https://tipboxcoin.net"
+  },
+  {
+    "chainId": 420420,
+    "url": "https://mainnet-explorer.kekchain.com"
+  },
+  {
+    "chainId": 424242,
+    "url": "https://testnet.ftnscan.com"
+  },
+  {
+    "chainId": 534353,
+    "url": "https://blockscout.scroll.io"
+  },
+  {
+    "chainId": 535037,
+    "url": "https://Bescscan.io"
+  },
+  {
+    "chainId": 641230,
+    "url": "https://brnkscan.bearnetwork.net"
+  },
+  {
+    "chainId": 751230,
+    "url": "https://brnktest-scan.bearnetwork.net"
+  },
+  {
+    "chainId": 800001,
+    "url": "https://explorer.octa.space"
+  },
+  {
+    "chainId": 910000,
+    "url": "https://explorer-testnet.posichain.org"
+  },
+  {
+    "chainId": 1313114,
+    "url": "https://explorer.ethoprotocol.com"
+  },
+  {
+    "chainId": 7225878,
+    "url": "https://explorer.saakuru.network"
+  },
+  {
+    "chainId": 7668378,
+    "url": "https://testnet.qom.one"
+  },
+  {
+    "chainId": 8794598,
+    "url": "https://blockscout.hap.land"
+  },
+  {
+    "chainId": 10101010,
+    "url": "https://explorer.soverun.com"
+  },
+  {
+    "chainId": 27082017,
+    "url": "https://testnet-explorer.exlscan.com"
+  },
+  {
+    "chainId": 27082022,
+    "url": "https://exlscan.com"
+  },
+  {
+    "chainId": 65010000,
+    "url": "https://bakerloo.autonity.org"
+  },
+  {
+    "chainId": 65100000,
+    "url": "https://piccadilly.autonity.org"
+  },
+  {
+    "chainId": 88888888,
+    "url": "https://teamblockchain.team"
+  },
+  {
+    "chainId": 192837465,
+    "url": "https://explorer.gather.network"
+  },
+  {
+    "chainId": 278611351,
+    "url": "https://turbulent-unique-scheat.explorer.mainnet.skalenodes.com"
+  },
+  {
+    "chainId": 344106930,
+    "url": "https://staging-utter-unripe-menkar.explorer.staging-v3.skalenodes.com"
+  },
+  {
+    "chainId": 356256156,
+    "url": "https://testnet-explorer.gather.network"
+  },
+  {
+    "chainId": 503129905,
+    "url": "https://staging-faint-slimy-achird.explorer.staging-v3.skalenodes.com"
+  },
+  {
+    "chainId": 1273227453,
+    "url": "https://wan-red-ain.explorer.mainnet.skalenodes.com"
+  },
+  {
+    "chainId": 1351057110,
+    "url": "https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com"
+  },
+  {
+    "chainId": 1482601649,
+    "url": "https://green-giddy-denebola.explorer.mainnet.skalenodes.com"
+  },
+  {
+    "chainId": 1564830818,
+    "url": "https://honorable-steel-rasalhague.explorer.mainnet.skalenodes.com"
+  },
+  {
+    "chainId": 2046399126,
+    "url": "https://elated-tan-skat.explorer.mainnet.skalenodes.com"
+  },
+  {
+    "chainId": 11297108099,
+    "url": "https://explorer.palm-uat.xyz"
+  },
+  {
+    "chainId": 11297108109,
+    "url": "https://explorer.palm.io"
+  },
+  {
+    "chainId": 111222333444,
+    "url": "https://scan.alphabetnetwork.org"
+  },
+  {
+    "chainId": 197710212031,
+    "url": "https://blockscout.haradev.com"
+  },
+  {
+    "chainId": 666301171999,
+    "url": "https://scan.ipdc.io"
+  }
+]

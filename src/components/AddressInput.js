@@ -16,17 +16,32 @@ const ShiftRight = styled.div`
   left: 10px;
 `;
 
-export default ({ label, addressState, setAddressState, field }) => {
+export default ({
+  label,
+  addressState,
+  setAddressState,
+  field,
+  helperTextOverride,
+  errorOverride,
+  clearAddressHelper,
+}) => {
   const network1 = useSelectNetwork1();
   const network2 = useSelectNetwork2();
   const chains = useSelectChains();
   const explorer1 = useSelectExplorer1();
   const explorer2 = useSelectExplorer2();
+
   const networkId = field === 1 ? network1 : network2;
   const explorer = field === 1 ? explorer1 : explorer2;
 
+  // if (!explorer1 || !explorer2) {
+  //   {
+  //     return <div />;
+  //   }
+  // }
+
   const explorerAddress = explorer
-    ? `${explorer}/address/${addressState.value}`
+    ? `${explorer}/address/${addressState.value}#code`
     : "";
 
   const copy = () => {
@@ -56,17 +71,27 @@ export default ({ label, addressState, setAddressState, field }) => {
     } catch (e) {
       checksum = newValue;
     }
+    if (!newValue || newValue === "") {
+      clearAddressHelper = { clearAddressHelper };
+    }
     const error = !isValid && newValue !== "";
     setAddressState({ valid: isValid, value: checksum, error });
   };
+
   return (
     <TextField
       id="outlined-basic"
       label={label}
       size="small"
       variant="outlined"
-      error={addressState.error}
-      helperText={addressState.error ? "Invalid address" : " "}
+      error={errorOverride || addressState.error}
+      helperText={
+        helperTextOverride
+          ? helperTextOverride
+          : addressState.error
+          ? "Invalid address"
+          : " "
+      }
       InputLabelProps={{ shrink: true }}
       sx={{
         "& .MuiInputBase-input": {
