@@ -22,8 +22,8 @@ export default function MyApp({ Component, pageProps }) {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Head>
-            <title>ChainLabs</title>
-            <link rel="icon" href="/favicon.ico" />
+            <title>x48.tools</title>
+            <link rel="icon" href="/icon.png" />
             <link
               rel="stylesheet"
               href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
