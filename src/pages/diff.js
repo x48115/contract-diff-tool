@@ -126,6 +126,7 @@ function App() {
   const [changedText, setChangedText] = useState("2 changed files");
 
   const [fileDiffCounts, setFileDiffCounts] = useState({});
+  const [perfectMatch, setPerfectMatch] = useState(false);
 
   const [helperTextOverride1, setHelperTextOverride1] = useState(null);
   const [helperTextOverride2, setHelperTextOverride2] = useState(null);
@@ -181,7 +182,6 @@ function App() {
   };
 
   useEffect(() => {
-    console.log("laodemmmm");
     setInitialLoad(true);
     setTimeout(() => {
       setInitialLoad(false);
@@ -243,6 +243,11 @@ function App() {
     );
 
     setContracts(mergedAndUnique);
+    if (Object.keys(mergedAndUnique).length === 0) {
+      setPerfectMatch(true);
+    } else {
+      setPerfectMatch(false);
+    }
   }, [code1, code2]);
 
   const delay = (time) => {
@@ -300,7 +305,6 @@ function App() {
     const notVerified = "Source not verified";
     if (data.result[0].SourceCode === "") {
       if (field === 1) {
-        console.log("not verified");
         setErrorOverride1(true);
         setHelperTextOverride1Fn(notVerified);
       } else {
@@ -542,21 +546,40 @@ function App() {
       >
         <HaventStartedText>Enter contract addresses above</HaventStartedText>
       </HaventStarted>
+
       <HaventStarted
         hide={
           initialLoad ||
+          errorOverride1 ||
+          errorOverride2 ||
           helperTextOverride1 === "Loading..." ||
-          helperTextOverride2 === "Loading..."
+          helperTextOverride2 === "Loading..." ||
+          !perfectMatch
+            ? "true"
+            : "false"
+        }
+      >
+        <HaventStartedText>Contracts are identical</HaventStartedText>
+      </HaventStarted>
+
+      <HaventStarted
+        hide={
+          (initialLoad ||
+            helperTextOverride1 === "Loading..." ||
+            helperTextOverride2 === "Loading...") &&
+          !perfectMatch
             ? "false"
             : "true"
         }
       >
         <HaventStartedText>
-          <span class="loader"></span>
+          <span className="loader"></span>
         </HaventStartedText>
       </HaventStarted>
+
       <Results
         hide={
+          perfectMatch ||
           initialLoad ||
           !hasResults ||
           errorOverride1 ||

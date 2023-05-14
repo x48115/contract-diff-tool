@@ -20,7 +20,11 @@ import {
   OpenInNew,
 } from "@mui/icons-material";
 import { useState } from "react";
-import { useSelectSelectedFile } from "../hooks";
+import {
+  useSelectExplorer1,
+  useSelectExplorer2,
+  useSelectSelectedFile,
+} from "../hooks";
 import { shortenAddress } from "../utils/string";
 
 const TitleWrapper = styled.div`
@@ -150,97 +154,6 @@ const copy = (text) => {
   navigator.clipboard.writeText(text);
 };
 
-const renderAddress = (address, field, source, sources) => (
-  <AddressWrap>
-    <AddressTitleWrap title={address}>
-      {shortenAddress(address, 10)}
-    </AddressTitleWrap>
-    {address && (
-      <MoreWrap>
-        <Tooltip
-          arrow
-          PopperProps={{
-            sx: {
-              "& .MuiTooltip-tooltip": {
-                bgcolor: "background.paper",
-              },
-              "& .MuiTooltip-arrow": {
-                bgcolor: "transparent",
-                color: "black",
-              },
-              "& .MuiTooltip-tooltip li": {
-                padding: 0,
-              },
-            },
-          }}
-          title={
-            <Box>
-              <List component="nav" aria-label="secondary mailbox folder">
-                <ListItem>
-                  <ListItemButton
-                    autoFocus
-                    sx={{
-                      height: "0px",
-                      width: "0px",
-                      position: "absolute",
-                      pointerEvents: "none",
-                      opacity: "0",
-                    }}
-                  />
-                  <ListItemButton onClick={() => copy(source)}>
-                    <ListItemIcon>
-                      <ContentCopy />
-                    </ListItemIcon>
-                    <ListItemText primary="Copy file" />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton onClick={() => copy(sources)}>
-                    <ListItemIcon>
-                      <CopyAll />
-                    </ListItemIcon>
-                    <ListItemText primary="Copy flattened files" />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <OpenInNew />
-                    </ListItemIcon>
-                    <ListItemText primary="View in explorer" />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <Download />
-                    </ListItemIcon>
-                    <ListItemText primary="Download all files" />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <Download />
-                    </ListItemIcon>
-                    <ListItemText primary="Download flattened files" />
-                  </ListItemButton>
-                </ListItem>
-              </List>
-            </Box>
-          }
-        >
-          <FileMore>
-            <IconButton size="small" edge="end">
-              <MoreHoriz sx={{ fontSize: 24 }} />
-            </IconButton>
-          </FileMore>
-        </Tooltip>
-      </MoreWrap>
-    )}
-  </AddressWrap>
-);
-
 export default ({
   oldCode,
   newCode,
@@ -255,6 +168,88 @@ export default ({
   const toggleCollapsed = () => {
     setCollapsed(collapsed === "true" ? "false" : "true");
   };
+
+  const explorer1 = useSelectExplorer1();
+  const explorer2 = useSelectExplorer2();
+
+  const renderAddress = (address, field, source) => (
+    <AddressWrap>
+      <AddressTitleWrap title={address}>
+        {shortenAddress(address, 10)}
+      </AddressTitleWrap>
+      {address && (
+        <MoreWrap>
+          <Tooltip
+            arrow
+            PopperProps={{
+              sx: {
+                "& .MuiTooltip-tooltip": {
+                  bgcolor: "background.paper",
+                },
+                "& .MuiTooltip-arrow": {
+                  bgcolor: "transparent",
+                  color: "black",
+                },
+                "& .MuiTooltip-tooltip li": {
+                  padding: 0,
+                },
+              },
+            }}
+            title={
+              <Box>
+                <List component="nav" aria-label="secondary mailbox folder">
+                  <ListItem>
+                    <ListItemButton
+                      autoFocus
+                      sx={{
+                        height: "0px",
+                        width: "0px",
+                        position: "absolute",
+                        pointerEvents: "none",
+                        opacity: "0",
+                      }}
+                    />
+                    <ListItemButton onClick={() => copy(source)}>
+                      <ListItemIcon>
+                        <ContentCopy />
+                      </ListItemIcon>
+                      <ListItemText primary="Copy file" />
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemButton
+                      onClick={() => {
+                        window
+                          .open(
+                            `${
+                              field === 1 ? explorer1 : explorer2
+                            }/address/${address}#code`,
+                            "_blank"
+                          )
+                          .focus();
+                      }}
+                    >
+                      <ListItemIcon>
+                        <OpenInNew />
+                      </ListItemIcon>
+                      <ListItemText primary="View in explorer" />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </Box>
+            }
+          >
+            <FileMore>
+              <IconButton size="small" edge="end">
+                <MoreHoriz sx={{ fontSize: 24 }} />
+              </IconButton>
+            </FileMore>
+          </Tooltip>
+        </MoreWrap>
+      )}
+    </AddressWrap>
+  );
 
   const selectedFile = useSelectSelectedFile();
   return (
