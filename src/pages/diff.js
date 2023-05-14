@@ -544,7 +544,11 @@ function App() {
             : "false"
         }
       >
-        <HaventStartedText>Enter contract addresses above</HaventStartedText>
+        <HaventStartedText>
+          {(errorOverride1 && helperTextOverride1) ||
+            (errorOverride2 && helperTextOverride2) ||
+            "Enter contract addresses above"}
+        </HaventStartedText>
       </HaventStarted>
 
       <HaventStarted

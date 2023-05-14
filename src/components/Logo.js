@@ -9,6 +9,7 @@ const Wrapper = styled.div`
   display: inline;
   div {
     display: inline;
+    font-family: "Courier New", monospace;
     color: #3bf0a1;
   }
 `;
@@ -17,20 +18,20 @@ export default function Logo() {
   return (
     <Wrapper>
       <pre>
-        __________________________/<div className="h">\\\_</div>_______/
+        ________________________/<div className="h">\\\_</div>_______/
         <div className="h">\\\\\\\\\_</div>
         ____________________________________________________/
-        <div className="h">\\\\\\</div>_________________
+        <div className="h">\\\\\\</div>__________________
       </pre>
       <pre>
-        ________________________/<div className="h">\\\\\_</div>_____/
+        _______________________/<div className="h">\\\\\_</div>_____/
         <div className="h">\\\/</div>//////<div className="h">\\\_</div>
         ___________________________________________________
         <div className="h">\/</div>///<div className="h">\\\</div>
-        _________________
+        _______________
       </pre>
       <pre>
-        ______________________/<div className="h">\\\/\\\_</div>____
+        _____________________/<div className="h">\\\/\\\_</div>____
         <div className="h">\/\\\_</div>____<div className="h">\/\\\_</div>
         ___________/<div className="h">\\\</div>
         _____________________________________<div className="h">\/\\\</div>
