@@ -133,6 +133,7 @@ function App() {
   const [errorOverride2, setErrorOverride2] = useState(null);
 
   const [contracts, setContracts] = useState([]);
+  const [initialLoad, setInitialLoad] = useState(true);
   const [filteredContracts, setFilteredContracts] = useState(contracts);
   const [code1, setCode1] = useState([]);
   const [code2, setCode2] = useState([]);
@@ -178,6 +179,14 @@ function App() {
       `height: calc(100vh - 79px - 61px - ${summaryBarRect.top}px`
     );
   };
+
+  useEffect(() => {
+    console.log("laodemmmm");
+    setInitialLoad(true);
+    setTimeout(() => {
+      setInitialLoad(false);
+    }, 300);
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -521,10 +530,43 @@ function App() {
           <ChainSelector field={2} />
         </Contract>
       </SearchField>
-      <HaventStarted hide={hasResults ? "true" : "false"}>
+      <HaventStarted
+        hide={
+          initialLoad ||
+          (hasResults && !errorOverride1 && !errorOverride2) ||
+          helperTextOverride1 == "Loading..." ||
+          helperTextOverride2 === "Loading..."
+            ? "true"
+            : "false"
+        }
+      >
         <HaventStartedText>Enter contract addresses above</HaventStartedText>
       </HaventStarted>
-      <Results hide={!hasResults ? "true" : "false"}>
+      <HaventStarted
+        hide={
+          initialLoad ||
+          helperTextOverride1 === "Loading..." ||
+          helperTextOverride2 === "Loading..."
+            ? "false"
+            : "true"
+        }
+      >
+        <HaventStartedText>
+          <span class="loader"></span>
+        </HaventStartedText>
+      </HaventStarted>
+      <Results
+        hide={
+          initialLoad ||
+          !hasResults ||
+          errorOverride1 ||
+          errorOverride2 ||
+          helperTextOverride1 === "Loading..." ||
+          helperTextOverride2 === "Loading..."
+            ? "true"
+            : "false"
+        }
+      >
         <Summary id="summary-bar">
           <CollapseAndText>
             {Collapse}

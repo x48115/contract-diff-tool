@@ -58,7 +58,9 @@ export default ({ children }) => {
       let filteredChains = chains.filter((chain) => chain.explorerApiUrl);
 
       // Blacklist
-      const blacklistedChains = [8738, 2203, 2888, 113, 2213, 3501, 224168];
+      const blacklistedChains = [
+        8738, 2203, 2888, 113, 2213, 3501, 224168, 751230,
+      ];
       filteredChains = filteredChains.filter(
         (chain) => !blacklistedChains.includes(chain.networkId)
       );
