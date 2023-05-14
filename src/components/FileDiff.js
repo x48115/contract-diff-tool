@@ -305,8 +305,12 @@ export default ({
           oldValue={oldCode}
           newValue={newCode}
           splitView={splitView}
-          leftTitle={renderAddress(address1, 1, oldCode)}
-          rightTitle={renderAddress(address2, 2, newCode)}
+          leftTitle={
+            splitView ? renderAddress(address1, 1, oldCode) : undefined
+          }
+          rightTitle={
+            splitView ? renderAddress(address1, 2, newCode) : undefined
+          }
           showDiffOnly={!expandAll}
           useDarkTheme={true}
           renderContent={highlightSyntax}
