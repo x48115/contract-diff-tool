@@ -144,29 +144,30 @@ function App() {
 
   const [address1State, setAddress1State] = useState({
     valid: false,
+    value: "",
     address: "",
   });
   const [address2State, setAddress2State] = useState({
     valid: false,
+    value: "",
     address: "",
   });
+
+  const network1 = useSelectNetwork1();
+  const network2 = useSelectNetwork2();
+
   const [hasResults, setHasResults] = useState(false);
   const [previousAddress1, setPreviousAddress1] = useState("");
   const [previousAddress2, setPreviousAddress2] = useState("");
   const [previousNetwork1, setPreviousNetwork1] = useState(network1);
   const [previousNetwork2, setPreviousNetwork2] = useState(network2);
 
-  const network1 = useSelectNetwork1();
-  const network2 = useSelectNetwork2();
   const chains = useSelectChains();
   const chain1 = useSelectChain1();
   const chain2 = useSelectChain2();
 
-  const hasAddresses = address1State.value !== "" && address2State.value !== "";
   const hasChains = Object.keys(chains).length;
   const addressesValid = address1State.valid && address2State.valid;
-  const address1Changed = address1State.value !== previousAddress1;
-  const address2Changed = address2State.value !== previousAddress2;
 
   const handleScroll = () => {
     if (filteredContracts && !filteredContracts.length) {
@@ -369,36 +370,46 @@ function App() {
   };
 
   useEffect(() => {
+    const address1Changed = address1State.value !== previousAddress1;
+    const address2Changed = address2State.value !== previousAddress2;
+    const network1Changed = network1 !== previousNetwork1;
+    const network2Changed = network2 !== previousNetwork2;
+
+    if (address1Changed && address1State.valid && hasChains) {
+      getSourceCode(1, address1State.value);
+      setPreviousAddress1(address1State.value);
+    } else if (network1Changed) {
+      setPreviousNetwork1(network1);
+      if (address1State.valid) {
+        getSourceCode(1, address1State.value);
+      }
+    }
+    if (address2Changed && address2State.valid && hasChains) {
+      getSourceCode(2, address2State.value);
+      setPreviousAddress2(address2State.value);
+    } else if (network2Changed) {
+      setPreviousNetwork2(network2);
+      if (address2State.valid) {
+        getSourceCode(2, address2State.value);
+      }
+    }
+
+    if (address1State.value && address2State.value)
+      window.history.replaceState(
+        {},
+        "",
+        `/diff?address1=${address1State.value}&chain1=${network1}&address2=${address2State.value}&chain2=${network2}`
+      );
+    const hasAddresses =
+      address1State.value !== "" && address2State.value !== "";
     if (hasAddresses && hasChains) {
+      const address1Changed = address1State.value !== previousAddress1;
+      const address2Changed = address2State.value !== previousAddress2;
       const addressesChanged = address1Changed || address2Changed;
 
       if (addressesValid && addressesChanged) {
         setHasResults(true);
       }
-      if (address1Changed && address1State.valid) {
-        getSourceCode(1, address1State.value);
-        setPreviousAddress1(address1State.value);
-      }
-      if (address2Changed && address2State.valid) {
-        getSourceCode(2, address2State.value);
-        setPreviousAddress2(address2State.value);
-      }
-      if (!(address1Changed || address2Changed)) {
-        if (network1 !== previousNetwork1) {
-          getSourceCode(1, address1State.value);
-          setPreviousNetwork1(network1);
-        }
-        if (network2 !== previousNetwork2) {
-          getSourceCode(2, address2State.value);
-          setPreviousNetwork2(network2);
-        }
-      }
-      if (address1State.value && address2State.value)
-        window.history.replaceState(
-          {},
-          "",
-          `/diff?address1=${address1State.value}&chain1=${network1}&address2=${address2State.value}&chain2=${network2}`
-        );
     } else {
       if (hasAddresses) {
         setHasResults(false);
