@@ -58,7 +58,7 @@ body {
 [class*='split-view'] [class*='code-fold'] > td:nth-of-type(3) {
   position: relative;
   right: 0px;
-  height: 40px;
+height: 40px;
   left: -81px;
   display: flex;
   align-items: center;
@@ -93,4 +93,10 @@ body {
   
   a {
     color: white;
+  }
+
+  .MuiFormHelperText-root {
+    position: absolute;
+    top: 40px;
+
   }

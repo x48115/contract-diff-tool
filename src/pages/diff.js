@@ -4,6 +4,7 @@ import prettierPluginSolidity from "prettier-plugin-solidity";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { mergeDeep } from "../utils/string";
+import Image from "next/image";
 import {
   useSplitView,
   useHideFiles,
@@ -21,6 +22,8 @@ import {
   Tooltip,
 } from "@mui/material";
 
+import { GitHub, Twitter } from "@mui/icons-material";
+
 import { setSplitView, setHideFiles } from "../store/options";
 import ChainSelector from "../components/ChainSelector";
 import AddressInput from "../components/AddressInput";
@@ -28,6 +31,30 @@ import FileList from "../components/FileList";
 import FileDiff from "../components/FileDiff";
 
 const prettierPlugins = [prettierPluginSolidity];
+
+const Flag = styled.img`
+  height: 24px;
+`;
+
+const HeaderLeft = styled.div`
+  display: flex;
+  grid-gap: 5px;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 30px;
+  margin-bottom: 20px;
+`;
+
+const HeaderRight = styled.div`
+  display: flex;
+  grid-gap: 10px;
+  cursor: pointer;
+`;
 
 const CollapseAndText = styled.div`
   display: flex;
@@ -48,9 +75,9 @@ const CollapseWrap = styled.div`
 `;
 
 const Summary = styled.div`
-  padding-bottom: 20px;
-  padding-top: 20px;
-  height: 79px;
+  height: 65px;
+  padding-top: 15px;
+  padding-bottom: 10px;
   z-index: 1;
   width: 100%;
   padding-left: 30px;
@@ -64,8 +91,6 @@ const Summary = styled.div`
 
 const SearchField = styled.div`
   padding: 0px 30px;
-  margin-top: 30px;
-  margin-bottom: 20px;
   display: grid;
   grid-gap: 20px;
   grid-template-columns: 1fr 1fr;
@@ -115,6 +140,10 @@ const HaventStarted = styled.div`
 const HaventStartedText = styled.div`
   font-size: 40px;
 `;
+
+const openAddress = (url) => {
+  window.open(url, "_blank").focus();
+};
 
 function App() {
   const hidefiles = useHideFiles();
@@ -519,6 +548,30 @@ function App() {
 
   return (
     <Wrapper>
+      <Header>
+        <HeaderLeft onClick={() => openAddress("/")}>
+          <Flag src="inverted_flag.png" />
+          <div>x48.tools</div>
+        </HeaderLeft>
+        <HeaderRight>
+          <GitHub
+            sx={{ fontSize: 24 }}
+            onClick={() =>
+              openAddress("https://github.com/x48115/contract-diff-tool")
+            }
+          />
+          <Image
+            src="/discord_logo.svg"
+            width="24"
+            height="24"
+            onClick={() => openAddress("https://discord.gg/KPhtdR7m2m")}
+          />
+          <Twitter
+            sx={{ fontSize: 24 }}
+            onClick={() => openAddress("https://twitter.com/x48_crypto")}
+          />
+        </HeaderRight>
+      </Header>
       <SearchField>
         <Contract>
           <AddressInput
@@ -561,7 +614,6 @@ function App() {
             "Enter contract addresses above"}
         </HaventStartedText>
       </HaventStarted>
-
       <HaventStarted
         hide={
           initialLoad ||
@@ -576,7 +628,6 @@ function App() {
       >
         <HaventStartedText>Contracts are identical</HaventStartedText>
       </HaventStarted>
-
       <HaventStarted
         hide={
           (initialLoad ||
@@ -591,7 +642,6 @@ function App() {
           <span className="loader"></span>
         </HaventStartedText>
       </HaventStarted>
-
       <Results
         hide={
           perfectMatch ||
