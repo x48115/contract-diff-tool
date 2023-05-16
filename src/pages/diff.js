@@ -117,6 +117,9 @@ const Contract = styled.div`
   grid-gap: 5px;
   grid-template-columns: auto 150px;
   width: 100%;
+  @media (max-width: 990px) {
+    margin-bottom: 20px;
+  }
 `;
 
 const Wrapper = styled.div`
