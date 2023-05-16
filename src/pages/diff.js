@@ -315,7 +315,7 @@ function App() {
 
     const mergedAndUnique = merged.filter((contracts) =>
       contracts.source1 && contracts.source2
-        ? contracts.source1 !== contracts.source2
+        ? formatCode(contracts.source1) !== formatCode(contracts.source2)
         : contracts
     );
 
@@ -611,6 +611,7 @@ function App() {
             src="/discord_logo.svg"
             width="24"
             height="24"
+            alt="Discord"
             onClick={() => openAddress("https://discord.gg/KPhtdR7m2m")}
           />
           <Twitter
