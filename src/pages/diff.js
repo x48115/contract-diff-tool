@@ -185,7 +185,11 @@ function App() {
   const [filteredContracts, setFilteredContracts] = useState(contracts);
   const [code1, setCode1] = useState([]);
   const [code2, setCode2] = useState([]);
-  const [mobileMode, setMobileMode] = useState(false);
+  const width =
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth;
+  const [mobileMode, setMobileMode] = useState(width <= 990);
 
   const [timeoutLeft, setTimeoutLeft] = useState();
   const [timeoutRight, setTimeoutRight] = useState();
