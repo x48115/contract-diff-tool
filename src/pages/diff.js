@@ -143,7 +143,7 @@ const Results = styled.div`
   display: ${(props) => (props.hide === "true" ? "none" : "")};
   @media (max-width: 990px) {
     margin-top: 20px;
-    overflow: hidden;
+    overflow: scroll;
     margin-right: 10px;
   }
 `;
