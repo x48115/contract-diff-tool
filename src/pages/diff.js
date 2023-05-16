@@ -597,7 +597,7 @@ function App() {
     <Wrapper>
       <Header>
         <HeaderLeft onClick={() => openAddress("/")}>
-          <Flag src="inverted_flag.png" />
+          <Flag src="inverted_flag.png" alt="logo" />
           <div>x48.tools</div>
         </HeaderLeft>
         <HeaderRight>

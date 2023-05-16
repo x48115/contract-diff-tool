@@ -309,7 +309,7 @@ export default ({
             splitView ? renderAddress(address1, 1, oldCode) : undefined
           }
           rightTitle={
-            splitView ? renderAddress(address1, 2, newCode) : undefined
+            splitView ? renderAddress(address2, 2, newCode) : undefined
           }
           showDiffOnly={!expandAll}
           useDarkTheme={true}
