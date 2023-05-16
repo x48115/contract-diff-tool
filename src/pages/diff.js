@@ -153,12 +153,18 @@ const HaventStarted = styled.div`
   display: flex;
   justify-content: center;
   top: 200px;
+  @media (max-width: 990px) {
+    top: 100px;
+  }
   position: relative;
   display: ${(props) => (props.hide === "true" ? "none" : "")};
 `;
 
 const HaventStartedText = styled.div`
   font-size: 40px;
+  @media (max-width: 990px) {
+    font-size: 20px;
+  }
 `;
 
 const openAddress = (url) => {
