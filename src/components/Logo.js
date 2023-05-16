@@ -12,6 +12,17 @@ const Wrapper = styled.div`
     font-family: "Courier New", monospace;
     color: #3bf0a1;
   }
+  @media (max-width: 990px) {
+    pre {
+      font-size: 7px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    pre {
+      font-size: 4px;
+    }
+  }
 `;
 
 export default function Logo() {
