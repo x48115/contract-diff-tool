@@ -29,7 +29,7 @@ export default ({ field }) => {
 
   return (
     <FormControl fullWidth>
-      <InputLabel>Network</InputLabel>
+      <InputLabel>{`Network ${field}`}</InputLabel>
       <Select
         size="small"
         label="Network"

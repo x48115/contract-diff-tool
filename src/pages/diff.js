@@ -48,6 +48,9 @@ const Header = styled.div`
   justify-content: space-between;
   padding: 10px 30px;
   margin-bottom: 20px;
+  @media (max-width: 990px) {
+    padding: 10px 10px;
+  }
 `;
 
 const HeaderRight = styled.div`
@@ -87,6 +90,9 @@ const Summary = styled.div`
   justify-content: space-between;
   position: sticky;
   top: 0px;
+  @media (max-width: 990px) {
+    display: none;
+  }
 `;
 
 const SearchField = styled.div`
@@ -94,6 +100,11 @@ const SearchField = styled.div`
   display: grid;
   grid-gap: 20px;
   grid-template-columns: 1fr 1fr;
+  @media (max-width: 990px) {
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: unset;
+    padding: 0px 10px;
+  }
 `;
 
 const LineChanges = styled.div`
@@ -120,12 +131,19 @@ const Layout = styled.div`
   display: grid;
   grid-template-columns: ${(props) =>
     props.hidefiles === "true" ? "auto" : "300px auto"};
-  grid-gap: 20px;
   margin: 0px 30px;
+  @media (max-width: 990px) {
+    grid-template-columns: auto;
+    margin: 0px 10px;
+  }
+  grid-gap: 20px;
 `;
 
 const Results = styled.div`
   display: ${(props) => (props.hide === "true" ? "none" : "")};
+  @media (max-width: 990px) {
+    margin-top: 20px;
+  }
 `;
 
 const HaventStarted = styled.div`
@@ -167,6 +185,7 @@ function App() {
   const [filteredContracts, setFilteredContracts] = useState(contracts);
   const [code1, setCode1] = useState([]);
   const [code2, setCode2] = useState([]);
+  const [mobileMode, setMobileMode] = useState(false);
 
   const [timeoutLeft, setTimeoutLeft] = useState();
   const [timeoutRight, setTimeoutRight] = useState();
@@ -211,6 +230,18 @@ function App() {
     );
   };
 
+  const handleResize = () => {
+    const width =
+      window.innerWidth ||
+      document.documentElement.clientWidth ||
+      document.body.clientWidth;
+    if (width <= 990) {
+      setMobileMode(true);
+    } else {
+      setMobileMode(false);
+    }
+  };
+
   useEffect(() => {
     setInitialLoad(true);
     setTimeout(() => {
@@ -220,9 +251,10 @@ function App() {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-
+    window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -542,7 +574,7 @@ function App() {
         fileName={item.name}
         oldCode={item.source1 ? formatCode(item.source1) : ""}
         newCode={item.source2 ? formatCode(item.source2) : ""}
-        splitView={splitView}
+        splitView={mobileMode ? false : splitView}
       />
     ));
 

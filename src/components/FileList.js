@@ -12,6 +12,10 @@ const LeftNav = styled.div`
   position: sticky;
   top: 79px;
   display: ${(props) => (props.hidefiles === "true" ? "none" : "grid")};
+
+  @media (max-width: 990px) {
+    display: none;
+  }
   grid-template-rows: 60px auto;
 `;
 
