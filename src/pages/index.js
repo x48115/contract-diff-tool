@@ -62,12 +62,12 @@ function App() {
         <a href="diff" target="_blank">
           Contract Diff tool
         </a>
-        <a
+        {/* <a
           href="https://github.com/x48115/blockchain-university"
           target="_blank"
         >
           Blockchain University
-        </a>
+        </a> */}
       </Links>
       <Icons>
         <GitHub
