@@ -31,14 +31,7 @@ const websocketMiddlewareOptions = {
     return JSON.stringify(data);
   },
   reconnectOnClose: true,
-  onOpen: (ws) => {
-    // console.log("brogg", ws);
-    // ws.send(0x09);
-    // setInterval(() => {
-    //   console.log("ping");
-    //   //   ws.send(0x09);
-    // }, 5000);
-  },
+  onOpen: (ws) => {},
 };
 const reduxWebsocketMiddleware = reduxWebsocket(websocketMiddlewareOptions);
 

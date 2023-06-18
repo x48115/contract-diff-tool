@@ -75,36 +75,6 @@ const FileMore = styled.div`
   opacity: 0.5;
 `;
 
-const FileHeader = styled.div`
-  background-color: #121519;
-  width: 100%;
-  line-height: 32px;
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
-    Liberation Mono, monospace;
-`;
-
-const FileInfos = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 100%;
-  background-color: #222;
-  display: ${(props) => (props.splitview === "true" ? "" : "none")};
-`;
-
-const FileInfo = styled.div`
-  width: 100%;
-  display: flex;
-  height: 40px;
-  align-items: center;
-  padding-left: 20px;
-  padding-right: 20px;
-  color: #555;
-  justify-content: space-between;
-  &:first-of-type {
-    border-right: 1px solid #292929;
-  }
-`;
-
 const Wrapper = styled.div`
   margin-bottom: 20px;
   border-radius: 6px;
@@ -123,11 +93,6 @@ const customStyles = {
     margin: "0px",
   },
 };
-
-const OverflowHidden = styled.div`
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
 
 const codeFoldMessageRenderer = (str) => {
   return (
