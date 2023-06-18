@@ -313,11 +313,16 @@ function App() {
     );
     const merged = Object.values(mergeDeep(aKeyed, bKeyed));
 
-    const mergedAndUnique = merged.filter((contracts) =>
+    let mergedAndUnique = merged.filter((contracts) =>
       contracts.source1 && contracts.source2
         ? formatCode(contracts.source1) !== formatCode(contracts.source2)
         : contracts
     );
+
+    if (code1.length && code2.length) {
+      mergedAndUnique[0].source2 = mergedAndUnique[1].source2;
+      mergedAndUnique = mergedAndUnique.slice(0, -1);
+    }
 
     setContracts(mergedAndUnique);
     if (Object.keys(mergedAndUnique).length === 0) {
