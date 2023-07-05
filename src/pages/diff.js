@@ -1,3 +1,5 @@
+import stringSimilarity from "string-similarity";
+import { uuid as uuidV4 } from "uuidv4";
 import { useState, useEffect } from "react";
 import prettier from "prettier";
 import prettierPluginSolidity from "prettier-plugin-solidity";
@@ -298,31 +300,75 @@ function App() {
       source1: code.source,
       address1: code.address,
     }));
+
     const code2Mapped = code2.map((code) => ({
       name: code.name,
       source2: code.source,
       address2: code.address,
     }));
-    const aKeyed = code1Mapped.reduce(
-      (acc, cur) => ({ ...acc, [cur.name]: cur }),
-      {}
-    );
-    const bKeyed = code2Mapped.reduce(
-      (acc, cur) => ({ ...acc, [cur.name]: cur }),
-      {}
-    );
-    const merged = Object.values(mergeDeep(aKeyed, bKeyed));
+
+    const diffTree = {};
+
+    for (const _code1 of code1) {
+      let highestSimilarity = 0;
+      let matchingFile;
+      for (const _code2 of code2) {
+        const similarity = stringSimilarity.compareTwoStrings(
+          formatCode(_code1.source),
+          formatCode(_code2.source)
+        );
+
+        if (similarity > highestSimilarity) {
+          highestSimilarity = similarity;
+          matchingFile = { ..._code2 };
+        }
+      }
+      const uuid = uuidV4();
+      if (highestSimilarity < 0.5) {
+        matchingFile = null;
+      }
+      const obj = {
+        name: _code1.name,
+        address1: _code1.address,
+        address2: matchingFile && matchingFile.address,
+        source1: _code1.source,
+        source2: matchingFile && matchingFile.source,
+        similarity: highestSimilarity,
+      };
+      diffTree[uuid] = obj;
+    }
+
+    for (const _code2 of code2) {
+      let highestSimilarity = 0;
+      for (const _code1 of code1) {
+        const similarity = stringSimilarity.compareTwoStrings(
+          formatCode(_code1.source),
+          formatCode(_code2.source)
+        );
+
+        if (similarity > highestSimilarity) {
+          highestSimilarity = similarity;
+        }
+      }
+      const uuid = uuidV4();
+      if (highestSimilarity < 0.5) {
+        const obj = {
+          name: _code2.name,
+          address2: _code2.address,
+          source2: _code2.source,
+          similarity: 0,
+        };
+        diffTree[uuid] = obj;
+      }
+    }
+
+    const merged = Object.values(diffTree);
 
     let mergedAndUnique = merged.filter((contracts) =>
       contracts.source1 && contracts.source2
         ? formatCode(contracts.source1) !== formatCode(contracts.source2)
         : contracts
     );
-
-    if (code1.length && code2.length) {
-      mergedAndUnique[0].source2 = mergedAndUnique[1].source2;
-      mergedAndUnique = mergedAndUnique.slice(0, -1);
-    }
 
     setContracts(mergedAndUnique);
     if (Object.keys(mergedAndUnique).length === 0) {
