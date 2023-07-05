@@ -126,6 +126,7 @@ export default ({
   fileName,
   address1,
   address2,
+  similarity,
 }) => {
   const [collapsed, setCollapsed] = useState("false");
   const [expandAll, setExpandAll] = useState(false);
@@ -261,7 +262,9 @@ export default ({
               />
             </IconButton>
           </Tooltip>
-          <TitleWrapper title={fileName}>{fileName}</TitleWrapper>
+          <TitleWrapper title={fileName}>
+            {fileName} ({(similarity * 100).toFixed(0)}% match)
+          </TitleWrapper>
         </div>
       </SourceHeader>
 

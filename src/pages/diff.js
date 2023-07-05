@@ -295,18 +295,6 @@ function App() {
       return;
     }
 
-    const code1Mapped = code1.map((code) => ({
-      name: code.name,
-      source1: code.source,
-      address1: code.address,
-    }));
-
-    const code2Mapped = code2.map((code) => ({
-      name: code.name,
-      source2: code.source,
-      address2: code.address,
-    }));
-
     const diffTree = {};
 
     for (const _code1 of code1) {
@@ -638,6 +626,7 @@ function App() {
         address1={item.address1 || ""}
         address2={item.address2 || ""}
         fileName={item.name}
+        similarity={item.similarity}
         oldCode={item.source1 ? formatCode(item.source1) : ""}
         newCode={item.source2 ? formatCode(item.source2) : ""}
         splitView={mobileMode ? false : splitView}
