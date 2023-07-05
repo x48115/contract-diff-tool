@@ -314,6 +314,7 @@ function App() {
       const uuid = uuidV4();
       if (highestSimilarity < 0.5) {
         matchingFile = null;
+        highestSimilarity = 0;
       }
       const obj = {
         name: _code1.name,
