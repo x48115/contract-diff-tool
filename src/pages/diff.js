@@ -304,17 +304,11 @@ function App() {
       address2: code.address,
     }));
     const aKeyed = code1Mapped.reduce(
-      (acc, cur) => ({
-        ...acc,
-        [cur.name.substring(cur.name.lastIndexOf("/") + 1)]: cur,
-      }),
+      (acc, cur) => ({ ...acc, [cur.name]: cur }),
       {}
     );
     const bKeyed = code2Mapped.reduce(
-      (acc, cur) => ({
-        ...acc,
-        [cur.name.substring(cur.name.lastIndexOf("/") + 1)]: cur,
-      }),
+      (acc, cur) => ({ ...acc, [cur.name]: cur }),
       {}
     );
     const merged = Object.values(mergeDeep(aKeyed, bKeyed));
