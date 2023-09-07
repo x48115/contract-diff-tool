@@ -652,6 +652,10 @@
     "url": "https://doscan.io"
   },
   {
+    "chainId": 8453,
+    "url": "https://api.basescan.org"
+  },
+  {
     "chainId": 8738,
     "url": "https://explorer.alph.network"
   },
