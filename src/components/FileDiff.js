@@ -88,10 +88,36 @@ const HideIfCollapsed = styled.div`
 `;
 
 const customStyles = {
-  codeFold: {
-    padding: "0px",
-    margin: "0px",
+  // diffContainer: { padding: '0px', margin: '0px' },
+  diffRemoved: {
+    'padding-top': '0px',
+    'padding-bottom': '0px',
+    'margin-top': '0px',
+    'margin-bottom': '0px',
   },
+  diffAdded: {
+    'padding-top': '0px',
+    'padding-bottom': '0px',
+    'margin-top': '0px',
+    'margin-bottom': '0px',
+  },
+  // marker: { padding: '0px', margin: '0px' },
+  // emptyGutter: { padding: '0px', margin: '0px' },
+  highlightedLine: { padding: '0px', margin: '0px' },
+  // lineNumber: { padding: '0px', margin: '0px' },
+  // highlightedGutter: { padding: '0px', margin: '0px' },
+  // contentText: { padding: '0px', margin: '0px' },
+  // gutter: { padding: '0px', margin: '0px' },
+  // line: { padding: '0px', margin: '0px' },
+  wordDiff: { padding: '0px', margin: '0px' },
+  wordAdded: { padding: '0px', margin: '0px' },
+  wordRemoved: { padding: '0px', margin: '0px' },
+  // codeFoldGutter: { padding: '0px', margin: '0px' },
+  codeFold: { padding: '0px', margin: '0px' },
+  // emptyLine: { padding: '0px', margin: '0px' },
+  // content: { padding: '0px', margin: '0px' },
+  // titleBlock: { padding: '0px', margin: '0px' },
+  // splitView: { padding: '0px', margin: '0px' },
 };
 
 const codeFoldMessageRenderer = (str) => {
@@ -118,6 +144,10 @@ const highlightSyntax = (str) => (
 const copy = (text) => {
   navigator.clipboard.writeText(text);
 };
+
+// Remove all comments and reduce 2+ new lines to 1 new line
+const removeCommentsAndExtraLines = str => str.replace(/^\s*\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//gm, '').replace(/\n{2,}/g, '\n').trim();
+
 
 export default ({
   oldCode,
@@ -270,8 +300,8 @@ export default ({
 
       <HideIfCollapsed collapsed={collapsed}>
         <ReactDiffViewer
-          oldValue={oldCode}
-          newValue={newCode}
+          oldValue={removeCommentsAndExtraLines(oldCode)}
+          newValue={removeCommentsAndExtraLines(newCode)}
           splitView={splitView}
           leftTitle={
             splitView ? renderAddress(address1, 1, oldCode) : undefined
