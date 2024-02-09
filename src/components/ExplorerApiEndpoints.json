@@ -1036,6 +1036,10 @@
     "url": "https://testnet.qom.one"
   },
   {
+    "chainId": 7777777,
+    "url": "https://explorer.zora.energy"
+  },
+  {
     "chainId": 8794598,
     "url": "https://blockscout.hap.land"
   },
